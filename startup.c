@@ -1,24 +1,33 @@
-
-/* Startup code */
-
 extern int main(void);
+extern void _stack(void);
 
-
-__attribute__((naked, noreturn)) void _reset(void)
+__attribute__((naked, noreturn)) void _reset_handler(void)
 {
-    // memset .bss to zero, and copy .data section to RAM region
+
     extern long _sbss, _ebss, _sdata, _edata, _sidata;
     for (long *dst = &_sbss; dst < &_ebss; dst++) *dst = 0;
     for (long *dst = &_sdata, *src = &_sidata; dst < &_edata;) *dst++ = *src++;
 
     main();
 
-    for(;;) (void) 0; // Infinite loop
+    for(;;)
+    {
+        // infinite loop
+    }
 }
 
-extern void _estack(void); 
+void _hardfault(void)
+{
+    for(;;)
+    {
+        // infinite loop
+    }
+}
 
-// 16 std and 60 specific handlers
-__attribute__((section(".vectors"))) void (*const tab[16+ 60])(void) = {
-    _estack, _reset
+// 16 standard and 60 STM32-specific handlers
+__attribute__((section(".vectors"))) void (*const isr[16 + 60])(void) = {
+  _stack, 
+  _reset_handler, 
+  0, 
+  _hardfault,
 };

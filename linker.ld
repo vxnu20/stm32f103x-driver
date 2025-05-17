@@ -1,34 +1,44 @@
-ENTRY(_reset);
+ENTRY(_reset_handler);
 
 MEMORY {
-    flash(rx) : ORIGIN = 0x08000000, LENGTH = 128k
-    sram(rwx) : ORIGIN = 0x20000000, LENGTH = 20k
+    flash(rx) : ORIGIN = 0x08000000, LENGTH = 128K
+    sram(rwx) : ORIGIN = 0x20000000, LENGTH = 20K
 }
 
-_estack = ORIGIN(sram) + LENGTH(sram); /* stack points to the end of SRAM */
+_stack = ORIGIN(sram) + LENGTH(sram); /* stack points to the end of SRAM */
 
 SECTIONS {
-.vectors : { KEEP (*(.vectors)) } > flash
-.text    : ALIGN(4) { *(.text*) }          > flash
-.rodata  : ALIGN(4) { *(.rodata*) }        > flash
+    
+    .vectors :
+    {
+        KEEP(*(.vectors))
+    } > flash
+
+    .text :
+    {
+        *(.text*)
+    } > flash
+
+    .rodata : 
+    { 
+        *(.rodata*) 
+    } > flash
+
+    .data : 
+    {
+        _sdata = .;     /* Start address of .data in SRAM */
+        *(.data)
+        _edata = .;     /* End address of .data in SRAM */
+    } > sram AT > flash
 
 
-.data : ALIGN(4) {
-    _sdata = .;   /* .data section start */
-    *(.first_data)
-    *(.data SORT(.data.*))
-    _edata = .;  /* .data section end */
-} > sram AT > flash
+    _sidata = LOADADDR(.data);
+    
+    .bss : {
 
-_sidata = LOADADDR(.data);
-
-
-.bss : {
-    _sbss = .;              /* .bss section start */
-    *(.bss SORT(.bss.*) COMMON)
-    _ebss = .;              /* .bss section end */
-}                                   > sram
-
-    . = ALIGN(4);
-    _end = .;     /* for cmsis_gcc.h  */
-} 
+        _sbss = .;              /* .bss section start */
+        *(.bss SORT(.bss.*) COMMON)
+        _ebss = .;              /* .bss section end */
+    } > sram
+    
+}
