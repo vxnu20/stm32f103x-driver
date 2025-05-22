@@ -1,6 +1,7 @@
+#include <stdint.h>
 #include "stm32f103x_gpio.h"
 
-void gpio_set_mode(struct gpio_regs* gpio, uint8_t pin, uint8_t mode, uint8_t cnf)
+void gpio_set_mode(gpio_regs* gpio, uint8_t pin, uint8_t mode, uint8_t cnf)
 {
     uint32_t* reg = (pin < 8) ? &gpio->CRL : &gpio->CRH;
     pin = (pin < 8) ? pin : pin - 8;
@@ -10,7 +11,7 @@ void gpio_set_mode(struct gpio_regs* gpio, uint8_t pin, uint8_t mode, uint8_t cn
     *reg |= (cnf << ((pin * 4) + 2));   /* Set the CNF bit */
 }
 
-void gpio_pin_toggle(struct gpio_regs* gpio, uint8_t pin)
+void gpio_pin_toggle(gpio_regs* gpio, uint8_t pin)
 {
     gpio->ODR ^= (1<<pin);
 }

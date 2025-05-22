@@ -13,7 +13,7 @@ struct rcc_regs {
     APB1RSTR,               /* APB1 reset register */
     AHBENR,                 /* AHB clock enable register */
     APB2ENR,                /* APB2 clock enable register */
-    APB1ENR                 /* APB1 clock enable register */
+    APB1ENR,                /* APB1 clock enable register */
     BDCR,                   /* backup domain control register */
     CSR                     
 };

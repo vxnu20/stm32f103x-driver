@@ -5,11 +5,11 @@
 #define GPIO_PORTC_OFFSET           (0x800UL)
 
 /* Each ports */
-#define GPIO_PORTA                  ((struct gpio_regs *) (GPIO_PERIPH_BASE_ADDR + GPIO_PORTA_OFFSET))
-#define GPIO_PORTB                  ((struct gpio_regs *) (GPIO_PERIPH_BASE_ADDR + GPIO_PORTB_OFFSET))
-#define GPIO_PORTC                  ((struct gpio_regs *) (GPIO_PERIPH_BASE_ADDR + GPIO_PORTC_OFFSET))
+#define GPIO_PORTA                  (( gpio_regs *) (GPIO_PERIPH_BASE_ADDR + GPIO_PORTA_OFFSET))
+#define GPIO_PORTB                  (( gpio_regs *) (GPIO_PERIPH_BASE_ADDR + GPIO_PORTB_OFFSET))
+#define GPIO_PORTC                  (( gpio_regs *) (GPIO_PERIPH_BASE_ADDR + GPIO_PORTC_OFFSET))
 
-struct gpio_regs {
+typedef struct {
     volatile uint32_t CRL, /* Port config register low */
     CRH,                   /* Port config register high */
     IDR,                   /* Input data register */
@@ -17,7 +17,7 @@ struct gpio_regs {
     BSSR,                  /* Bit set reset register */
     BRR,                   /* Bit reset register */
     LCKR                   /* lock register     */
-};
+}gpio_regs;
 
 /* pin mode
     00: Input mode (reset state)
@@ -44,7 +44,7 @@ enum gpio_in_cnf {
     FLOATING_INPUT,
     IN_PULLUP_PULLOUT,
     RESERVED
-}
+};
 
 /* output mode
     00: General purpose output push-pull
@@ -57,9 +57,8 @@ enum gpio_out_cnf {
     GN_OPEN_DRAIN,
     ALT_PUSH_PULL,
     ALT_OPEN_DRAIN
-}
+};
 
 /* function prototypes */
-
-void gpio_set_mode(struct gpio_regs*, uint8_t ,uint8_t , uint8_t);
-void gpio_pin_toggle(struct gpio_regs*, uint8_t);
+void gpio_set_mode(gpio_regs*, uint8_t ,uint8_t , uint8_t);
+void gpio_pin_toggle(gpio_regs*, uint8_t);

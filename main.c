@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include "stm32f103x_gpio.h"
 #include "stm32f103x_clock.h"
 
