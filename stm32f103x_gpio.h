@@ -18,3 +18,48 @@ struct gpio_regs {
     BRR,                   /* Bit reset register */
     LCKR                   /* lock register     */
 };
+
+/* pin mode
+    00: Input mode (reset state)
+    01: Output mode, max speed 10 MHz.
+    10: Output mode, max speed 2 MHz.
+    11: Output mode, max speed 50 MHz.
+*/
+enum gpio_mode {
+    GPIO_MODE_IN,
+    GPIO_MODE_OUT10MHZ,
+    GPIO_MODE_OUT2MHZ,
+    GPIO_MODE_OUT50MHZ
+};
+
+/* input mode 
+    00: Analog mode
+    01: Floating input (reset state)
+    10: Input with pull-up / pull-down
+    11: Reserved
+*/
+
+enum gpio_in_cnf {
+    ANALOG,
+    FLOATING_INPUT,
+    IN_PULLUP_PULLOUT,
+    RESERVED
+}
+
+/* output mode
+    00: General purpose output push-pull
+    01: General purpose output Open-drain
+    10: Alternate function output Push-pull
+    11: Alternate function output Open-drain
+*/
+enum gpio_out_cnf {
+    GN_PUSH_PULL,
+    GN_OPEN_DRAIN,
+    ALT_PUSH_PULL,
+    ALT_OPEN_DRAIN
+}
+
+/* function prototypes */
+
+void gpio_set_mode(struct gpio_regs*, uint8_t ,uint8_t , uint8_t);
+void gpio_pin_toggle(struct gpio_regs*, uint8_t);
