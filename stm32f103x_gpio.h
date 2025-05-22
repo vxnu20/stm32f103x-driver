@@ -10,13 +10,13 @@
 #define GPIO_PORTC                  (( gpio_regs *) (GPIO_PERIPH_BASE_ADDR + GPIO_PORTC_OFFSET))
 
 typedef struct {
-    volatile uint32_t CRL, /* Port config register low */
-    CRH,                   /* Port config register high */
-    IDR,                   /* Input data register */
-    ODR,                   /* Output data register */
-    BSSR,                  /* Bit set reset register */
-    BRR,                   /* Bit reset register */
-    LCKR                   /* lock register     */
+    volatile uint32_t CRL;          /* Port config register low */
+    volatile uint32_t CRH;          /* Port config register high */
+    volatile uint32_t IDR;          /* Input data register */
+    volatile uint32_t ODR;          /* Output data register */
+    volatile uint32_t BSSR;         /* Bit set reset register */
+    volatile uint32_t BRR;          /* Bit reset register */
+    volatile uint32_t LCK;          /* lock register     */
 }gpio_regs;
 
 /* pin mode
