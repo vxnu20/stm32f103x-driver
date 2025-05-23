@@ -1,9 +1,11 @@
-
 /* macros for reset & clock control RCC*/
 #define RCC_BASE_ADDR       (0x40021000UL)
-
 #define RCC                 ((rcc_regs *) RCC_BASE_ADDR)
 
+/* macros for enable APB1, APB2 and AHB bits */
+#define APB2ENR_PORTA       (1<<2)
+#define APB2ENR_PORTB       (1<<3)
+#define APB2ENR_PORTC       (1<<4)
 
 typedef struct {
     volatile uint32_t CR;               /* clock control register */

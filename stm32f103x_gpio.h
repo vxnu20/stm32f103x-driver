@@ -62,3 +62,6 @@ enum gpio_out_cnf {
 /* function prototypes */
 void gpio_set_mode(gpio_regs*, uint8_t ,uint8_t , uint8_t);
 void gpio_pin_toggle(gpio_regs*, uint8_t);
+void gpio_pin_set(gpio_regs*, uint8_t pin);
+void gpio_pin_reset(gpio_regs*, uint8_t pin);
+bool gpio_pin_read(gpio_regs*, uint8_t pin);
