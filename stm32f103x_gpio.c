@@ -18,12 +18,12 @@ void gpio_pin_toggle(gpio_regs* gpio, uint8_t pin)
 
 void gpio_pin_set(gpio_regs* gpio, uint8_t pin)
 {
-    gpio->BSSR |= (1<<pin);
+    gpio->BSRR |= (1<<pin);
 }
 
 void gpio_pin_reset(gpio_regs* gpio, uint8_t pin)
 {
-    gpio->BSSR |= (1<<(pin + 16));
+    gpio->BSRR |= (1<<(pin + 16));
 }
 
 bool gpio_pin_read(gpio_regs* gpio, uint8_t pin)

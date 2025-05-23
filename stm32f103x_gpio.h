@@ -14,7 +14,7 @@ typedef struct {
     volatile uint32_t CRH;          /* Port config register high */
     volatile uint32_t IDR;          /* Input data register */
     volatile uint32_t ODR;          /* Output data register */
-    volatile uint32_t BSSR;         /* Bit set reset register */
+    volatile uint32_t BSRR;         /* Bit set reset register */
     volatile uint32_t BRR;          /* Bit reset register */
     volatile uint32_t LCK;          /* lock register     */
 }gpio_regs;
