@@ -1,3 +1,7 @@
+/* Header files */
+#include <stdint.h>
+#include <stdbool.h>
+
 /* Macros for GPIO peripherals */
 #define GPIO_PERIPH_BASE_ADDR       (0x40010800UL)
 #define GPIO_PORTA_OFFSET           (0x0UL)

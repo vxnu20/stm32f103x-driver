@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include "stm32f103x_gpio.h"
 
 void gpio_set_mode(gpio_regs* gpio, uint8_t pin, uint8_t mode, uint8_t cnf)
