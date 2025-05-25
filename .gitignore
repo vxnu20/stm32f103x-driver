@@ -1,6 +1,5 @@
 .DS_Store
 *.bin
 *.elf
-.vscode
 *.map
 *.o
