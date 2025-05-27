@@ -10,10 +10,10 @@
 
 /* registers of STK */
 typedef struct {
-    volatile uint32_t CTRL; /* systick control and status register */
-    volatile uint32_t LOAD; /* reload value register */
-    volatile uint32_t VAL;  /* current value register */
-    volatile uint32_t CALIB /* calibration value register */
+    volatile uint32_t CTRL;     /* systick control and status register */
+    volatile uint32_t LOAD;     /* reload value register */
+    volatile uint32_t VAL;      /* current value register */
+    volatile uint32_t CALIB;    /* calibration value register */
     
 } systick_regs;
 

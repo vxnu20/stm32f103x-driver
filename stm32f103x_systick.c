@@ -10,7 +10,7 @@ void systick_init(uint32_t tick)
     SYSTICK->CTRL = STK_ENABLE | STK_INT_ENABLE | STK_CLK_AHB;
 }
 
-_systick_handler()
+void _systick_handler()
 {
     systick_count++;
 }

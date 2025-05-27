@@ -1,5 +1,6 @@
 extern int main(void);
 extern void _stack(void);
+extern void _systick_handler(void);
 
 __attribute__((naked, noreturn)) void _reset_handler(void)
 {
