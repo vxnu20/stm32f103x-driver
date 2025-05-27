@@ -30,4 +30,6 @@ __attribute__((section(".vectors"))) void (*const isr[16 + 60])(void) = {
   _reset_handler, 
   0, 
   _hardfault,
+  0,0,0,0,0,0,0,0,0,0,0,
+  _systick_handler
 };
