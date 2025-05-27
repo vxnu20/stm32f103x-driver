@@ -1,5 +1,6 @@
 #include "stm32f103x_systick.h"
 
+volatile uint32_t systick_count;
 
 void systick_init(uint32_t tick)
 {

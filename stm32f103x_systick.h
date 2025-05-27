@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 /* macros */
-#define SYSTICK         ((systick_regs*) 0xE000E010UL)
+#define SYSTICK         ((systick_regs *) 0xE000E010UL)
 #define STK_ENABLE      ((1<<0))
 #define STK_INT_ENABLE  ((1<<1))
 #define STK_CLK_AHB     ((1<<2))
@@ -16,9 +16,6 @@ typedef struct {
     volatile uint32_t CALIB;    /* calibration value register */
     
 } systick_regs;
-
-/*global variables */
-volatile uint32_t systick_count;
 
 /* function prototypes */
 void systick_init(uint32_t);
