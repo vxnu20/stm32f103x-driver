@@ -1,5 +1,6 @@
 extern int main(void);
 extern void _stack(void);
+extern void _systick_handler(void);
 
 __attribute__((naked, noreturn)) void _reset_handler(void)
 {
@@ -30,4 +31,6 @@ __attribute__((section(".vectors"))) void (*const isr[16 + 60])(void) = {
   _reset_handler, 
   0, 
   _hardfault,
+  0,0,0,0,0,0,0,0,0,0,0,
+  _systick_handler
 };
