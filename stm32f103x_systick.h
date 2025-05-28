@@ -19,3 +19,4 @@ typedef struct {
 
 /* function prototypes */
 void systick_init(uint32_t);
+void _delay(uint32_t);
