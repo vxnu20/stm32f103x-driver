@@ -3,9 +3,13 @@
 #define RCC                 ((rcc_regs *) RCC_BASE_ADDR)
 
 /* macros for enable APB1, APB2 and AHB bits */
+#define APB2ENR_AFIO        (1<<0)
 #define APB2ENR_PORTA       (1<<2)
 #define APB2ENR_PORTB       (1<<3)
 #define APB2ENR_PORTC       (1<<4)
+#define APB2ENR_USART1      (1<<14)
+#define APB1ENR_USART2      (1<<17)
+#define APB1ENR_USART3      (1<<18)
 
 typedef struct {
     volatile uint32_t CR;               /* clock control register */
