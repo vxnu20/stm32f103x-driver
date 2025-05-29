@@ -10,19 +10,20 @@ int main()
     /* enable clock for PORT c*/
     RCC->APB2ENR |= APB2ENR_PORTC;
     RCC->APB2ENR |= APB2ENR_PORTA;
+    RCC->APB2ENR |= APB2ENR_PORTB;
     
     gpio_set_mode(GPIO_PORTC, 13, GPIO_MODE_OUT2MHZ, GN_PUSH_PULL);
-    gpio_set_mode(GPIO_PORTA, 9, GPIO_MODE_OUT2MHZ, ALT_PUSH_PULL);
+    gpio_set_mode(GPIO_PORTB, 10, GPIO_MODE_OUT2MHZ, ALT_PUSH_PULL);
+    gpio_set_mode(GPIO_PORTB, 11, GPIO_MODE_IN, FLOATING_INPUT);
     
-    usart_init(USART1, USART_DEFAULT_BAUD);
+    usart_init(USART3, USART_DEFAULT_BAUD);
 
     /* enable system tick */
-    systick_init(CPU_DEFAULT_FREQ/1000);
+    // systick_init(CPU_DEFAULT_FREQ/1000);
 
     while(1)
     {
-        usart_write_string(USART1, "hello world!\n");
-        _delay(500);
+        usart_write(USART3,'A');
     }
 
     return 0;
