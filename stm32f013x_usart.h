@@ -6,6 +6,12 @@
 
 /* macros */
 #define USART1                  (( usart_regs *) 0x40013800UL)
+#define USART_BASE_ADDR         (0x40004400UL)
+#define USART2_OFFSET           (0UL)
+#define USART3_OFFSET           (0x400UL)
+#define USART2                  (USART_BASE_ADDR+USART2_OFFSET)
+#define USART2                  (USART_BASE_ADDR+USART3_OFFSET)
+
 #define USART_DEFAULT_BAUD      ((4<<4) | 5)    /* 115200 at default 8MHz */
 #define USART_CR1_EN_TE         (1<<3)
 #define USART_CR1_EN_UE         (1<<13)

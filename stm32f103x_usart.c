@@ -14,7 +14,7 @@ void usart_init(usart_regs* usart, unsigned long baud)
 
 void usart_write(usart_regs* usart, char data)
 {
-    while(!(usart->SR && USART_SR_TC_SET)){ asm("nop"); }
+    while(!(usart->SR & USART_SR_TC_SET)){ asm("nop"); }
     usart->DR = data;
 }
 
