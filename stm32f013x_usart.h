@@ -9,12 +9,14 @@
 #define USART_BASE_ADDR         (0x40004400UL)
 #define USART2_OFFSET           (0UL)
 #define USART3_OFFSET           (0x400UL)
-#define USART2                  (USART_BASE_ADDR+USART2_OFFSET)
-#define USART2                  (USART_BASE_ADDR+USART3_OFFSET)
+#define USART2                  (( usart_regs *) (USART_BASE_ADDR+USART2_OFFSET))
+#define USART3                  (( usart_regs *) (USART_BASE_ADDR+USART3_OFFSET))
 
 #define USART_DEFAULT_BAUD      ((4<<4) | 5)    /* 115200 at default 8MHz */
+#define USART_CR1_EN_RE         (1<<2)
 #define USART_CR1_EN_TE         (1<<3)
 #define USART_CR1_EN_UE         (1<<13)
+#define USART_SR_RXNE_SET       (1<<5) 
 #define USART_SR_TC_SET         (1<<6)         
 
 /* registers */
@@ -32,3 +34,4 @@ typedef struct {
 void usart_init(usart_regs*, unsigned long);
 void usart_write(usart_regs*, char);
 void usart_write_string(usart_regs*, const char *);
+char usart_read(usart_regs*);

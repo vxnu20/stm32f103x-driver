@@ -9,7 +9,7 @@ void usart_init(usart_regs* usart, unsigned long baud)
     }
     /* set the baud rate */
     usart->BRR = baud;
-    usart->CR1 |= (USART_CR1_EN_TE | USART_CR1_EN_UE);
+    usart->CR1 |= (USART_CR1_EN_TE |USART_CR1_EN_RE | USART_CR1_EN_UE);
 }
 
 void usart_write(usart_regs* usart, char data)
@@ -24,4 +24,10 @@ void usart_write_string(usart_regs* usart, const char *str)
     {
         usart_write(usart, *str++);
     }
+}
+
+char usart_read(usart_regs* usart)
+{
+    while(!(usart->SR & USART_SR_RXNE_SET)){ asm("nop"); }
+    return usart->DR;
 }
