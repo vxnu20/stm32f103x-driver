@@ -1,67 +1,43 @@
 # Compiler and tools
-CC 		= arm-none-eabi-gcc
-OBJCOPY = arm-none-eabi-objcopy
-OBJDUMP = arm-none-eabi-objdump
-SIZE	= arm-none-eabi-size
+CC       = arm-none-eabi-gcc
+OBJCOPY  = arm-none-eabi-objcopy
+SIZE     = arm-none-eabi-size
 
-TARGET = firmware
+# Target name
+TARGET   = image
 
 # Directories
-SRC_DIR		= src
-INC_DIR		= include
-BUILD_DIR	= build
+SRC_DIR     = src
+INC_DIR     = include
+BUILD_DIR   = build
 
-# Linker script
+# Files
+SOURCES     = $(wildcard $(SRC_DIR)/*.c)
+OBJECTS     = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
 LINKER_SCRIPT = linker.ld
 
-# Compiler flags
-CFLAGS = -mcpu=cortex-m3 \
-         -mthumb \
-         -Wall \
-         -Wextra \
-         -std=c99 \
-         -O2 \
-         -g \
-         -I$(INC_DIR)
-
-# Linker flags
-LDFLAGS = -T$(LINKER_SCRIPT) \
-          -Wl,-Map=$(BUILD_DIR)/$(TARGET).map
-
-#Find all C source files
-SOURCES = $(wildcard $(SRC_DIR)/*.c)
+# Flags
+CFLAGS      = -mcpu=cortex-m3 -mthumb -nostdlib -nostartfiles -g -I$(INC_DIR)
+LDFLAGS     = -T $(LINKER_SCRIPT)
 
 # Default target
-all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).bin
+all: $(BUILD_DIR)/$(TARGET).elf
 
-# Create build directory
+# Build ELF
+$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) $(LDFLAGS) -o $@
+	$(SIZE) $@
+
+# Create build directory if needed
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-# Compile C files to object files
+# Compile .c to .o
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Link object files to create ELF
-$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS)
-	$(CC) $(LDFLAGS) $^ -o $@
-	$(SIZE) $@
-
-# Create binary file from ELF
-$(BUILD_DIR)/$(TARGET).bin: $(BUILD_DIR)/$(TARGET).elf
-	$(OBJCOPY) -O binary $< $@
-
-# Flash target - program the microcontroller
-flash: $(BUILD_DIR)/$(TARGET).elf
-	openocd -f interface/stlink-v2.cfg -f target/stm32f1x.cfg -c "program $(BUILD_DIR)/$(TARGET).elf verify reset exit"
-
-# Clean build files
+# Clean up
 clean:
 	rm -rf $(BUILD_DIR)
 
-# Debug target - compile with debug symbols and no optimization
-debug: CFLAGS += -DDEBUG -O0
-debug: all
-
-# Declare phony targets
-.PHONY: all clean debug flash
+.PHONY: all clean
