@@ -31,9 +31,6 @@ LDFLAGS = -T$(LINKER_SCRIPT) \
 #Find all C source files
 SOURCES = $(wildcard $(SRC_DIR)/*.c)
 
-# Generate object file names
-OBJECTS = $(SOURCES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
-
 # Default target
 all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).bin
 
