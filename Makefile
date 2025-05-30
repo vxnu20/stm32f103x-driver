@@ -36,8 +36,13 @@ $(BUILD_DIR):
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Flash target
+flash: all
+	openocd -f interface/stlink-v2.cfg -f target/stm32f1x.cfg \
+		-c "program $(BUILD_DIR)/$(TARGET).elf verify reset exit"
+
 # Clean up
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all clean
+.PHONY: all clean flash
