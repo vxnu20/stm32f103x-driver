@@ -51,6 +51,10 @@ $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS)
 $(BUILD_DIR)/$(TARGET).bin: $(BUILD_DIR)/$(TARGET).elf
 	$(OBJCOPY) -O binary $< $@
 
+# Flash target - program the microcontroller
+flash: $(BUILD_DIR)/$(TARGET).elf
+	openocd -f interface/stlink-v2.cfg -f target/stm32f1x.cfg -c "program $(BUILD_DIR)/$(TARGET).elf verify reset exit"
+
 # Clean build files
 clean:
 	rm -rf $(BUILD_DIR)
@@ -60,4 +64,4 @@ debug: CFLAGS += -DDEBUG -O0
 debug: all
 
 # Declare phony targets
-.PHONY: all clean debug
+.PHONY: all clean debug flash
