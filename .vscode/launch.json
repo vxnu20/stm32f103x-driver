@@ -4,7 +4,7 @@
         {
             "name": "STM32 F103x Debug",
             "cwd": "${workspaceRoot}",
-            "executable": "flash.elf",
+            "executable": "${workspaceRoot}/build/image.elf",
             "request": "launch",
             "type": "cortex-debug",
             "servertype": "openocd",
