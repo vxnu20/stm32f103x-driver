@@ -7,6 +7,8 @@
 #define APB2ENR_PORTA       (1<<2)
 #define APB2ENR_PORTB       (1<<3)
 #define APB2ENR_PORTC       (1<<4)
+#define APB2ENR_ADC1        (1<<9)
+#define APB2ENR_ADC2        (1<<10)
 #define APB2ENR_USART1      (1<<14)
 #define APB1ENR_USART2      (1<<17)
 #define APB1ENR_USART3      (1<<18)
