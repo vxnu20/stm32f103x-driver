@@ -1,6 +1,8 @@
 /* Header files */
 #include <stdint.h>
 
+#include "stm32f103x_rcc.h"
+
 /* macros of ADC driver */
 #define ADC_BASE_ADDR       (0x40012400UL)
 #define ADC_ADC1_OFFSET     (0x0UL)
@@ -32,3 +34,6 @@ typedef struct {
     volatile uint32_t JDR4;     /* injected data register 4 */
     volatile uint32_t DR;       /* regular data register */
 }adc_regs;
+
+/* function prototypes */
+void adc_init(adc_regs*);
