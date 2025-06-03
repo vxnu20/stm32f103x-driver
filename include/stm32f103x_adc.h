@@ -10,7 +10,7 @@
 #define ADC2                (( adc_regs *) (ADC_BASE_ADDR + ADC_ADC2_OFFSET))
 
 /* ADC registers */
-struct typedef {
+typedef struct {
     volatile uint32_t SR;       /* status register */
     volatile uint32_t CR1;      /* control register 1*/
     volatile uint32_t CR2;      /* control register 2*/
