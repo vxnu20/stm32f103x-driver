@@ -10,6 +10,7 @@
 #define ADC_CR2_ADON_SET        (1<<0)
 #define ADC_CR2_SWSTART_SET     (1<<22)
 #define ADC_SR_EOC_SET          (1<<1)
+#define ADC_MAX_CHANNELS        (10)
 
 #define ADC1                (( adc_regs *) (ADC_BASE_ADDR + ADC_ADC1_OFFSET))
 #define ADC2                (( adc_regs *) (ADC_BASE_ADDR + ADC_ADC2_OFFSET))
@@ -56,11 +57,11 @@ typedef enum {
 typedef struct {
     adc_regs* adc;
     uint8_t no_of_channels;
-    adc_channels channels[10];
+    adc_channels channels[ADC_MAX_CHANNELS];
 } adc_config;
 
 /* function prototypes */
-void adc_init(adc_config*);
+void adc_init(adc_config);
 void adc_start_conversion(adc_regs*);
 uint32_t adc_read_value(adc_regs*);
-static void adc_internal_set_sequence(adc_config*);
+static void adc_internal_set_sequence(adc_config);
