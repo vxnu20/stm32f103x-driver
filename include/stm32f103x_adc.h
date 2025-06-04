@@ -4,9 +4,12 @@
 #include "stm32f103x_rcc.h"
 
 /* macros of ADC driver */
-#define ADC_BASE_ADDR       (0x40012400UL)
-#define ADC_ADC1_OFFSET     (0x0UL)
-#define ADC_ADC2_OFFSET     (0x400UL)
+#define ADC_BASE_ADDR           (0x40012400UL)
+#define ADC_ADC1_OFFSET         (0x0UL)
+#define ADC_ADC2_OFFSET         (0x400UL)
+#define ADC_CR2_ADON_SET        (1<<0)
+#define ADC_CR2_SWSTART_SET     (1<<22)
+#define ADC_SR_EOC_SET          (1<<1)
 
 #define ADC1                (( adc_regs *) (ADC_BASE_ADDR + ADC_ADC1_OFFSET))
 #define ADC2                (( adc_regs *) (ADC_BASE_ADDR + ADC_ADC2_OFFSET))
@@ -35,5 +38,29 @@ typedef struct {
     volatile uint32_t DR;       /* regular data register */
 }adc_regs;
 
+/* 10 adc channels */
+typedef enum {
+    channel0,
+    channel1,
+    channel2,
+    channel3,
+    channel4,
+    channel5,
+    channel6,
+    channel7,
+    channel8,
+    channel9
+}adc_channels;
+
+/* structure to hold the adc configuration */
+typedef struct {
+    adc_regs* adc;
+    adc_channels channels[];
+    uint8_t size;
+} adc_config;
+
 /* function prototypes */
-void adc_init(adc_regs*);
+void adc_init(adc_config*);
+void adc_start_conversion(adc_regs*);
+uint32_t adc_read_value(adc_regs*);
+static void adc_internal_set_sequence(adc_config*);

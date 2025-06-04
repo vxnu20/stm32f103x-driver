@@ -2,6 +2,7 @@
 #include "stm32f103x_systick.h"
 #include "stm32f013x_usart.h"
 #include "stm32f103x_clock.h"
+#include "stm32f103x_adc.h"
 #include <stdio.h>
 
 
@@ -18,12 +19,23 @@ int main()
     gpio_set_mode(GPIO_PORTA, 9, GPIO_MODE_OUT2MHZ, ALT_PUSH_PULL);
     gpio_set_mode(GPIO_PORTA, 10, GPIO_MODE_IN, FLOATING_INPUT);
     usart_init(USART3, USART_DEFAULT_BAUD);
+
     /* enable system tick */
     systick_init(CPU_DEFAULT_FREQ/1000);
 
+    /* adc config example */
+    adc_config* config;
+    config->adc = ADC1;
+    config->adc_channels = [channel0,channel1,channel2];
+    config->size = 3;
+    adc_init(config);
+
     while(1)
     {
-      
+        _delay(500);
+        adc_start_conversion(config->adc);
+        _delay(500);
+        uint32_t value = adc_read_value(config->adc);
     }
 
     return 0;
