@@ -19,7 +19,7 @@ void adc_init(adc_config* config)
     /* set the conversion sequence */
     adc_internal_set_sequence(config);
     /* set conversion sequence length */
-    config->adc->SQR1 |= (config->size << 20);
+    config->adc->SQR1 |= (config->no_of_channels << 20);
     /* enable adc module */
     config->adc->CR2 |= ADC_CR2_ADON_SET;
 }
@@ -40,7 +40,7 @@ uint32_t adc_read_value(adc_regs* adc)
 
 static void adc_internal_set_sequence(adc_config* config)
 {
-    for(uint8_t i = 0; i < config->size && i < 16; i++) {
+    for(uint8_t i = 0; i < config->no_of_channels && i < 16; i++) {
         uint8_t reg_pos = i % 6;  // Position within register (0-5)
         uint32_t channel_bits = config->channels[i] << (reg_pos * 5);
         

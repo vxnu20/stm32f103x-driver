@@ -1,3 +1,6 @@
+#ifndef STM32F103X_RCC_H
+#define STM32F103X_RCC_H
+
 /* macros for reset & clock control RCC*/
 #define RCC_BASE_ADDR       (0x40021000UL)
 #define RCC                 ((rcc_regs *) RCC_BASE_ADDR)
@@ -25,3 +28,5 @@ typedef struct {
     volatile uint32_t BDCR;             /* backup domain control register */
     volatile uint32_t CSR;              /* control status register */ 
 }rcc_regs;
+
+#endif // STM32F103X_RCC_H

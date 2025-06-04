@@ -55,8 +55,8 @@ typedef enum {
 /* structure to hold the adc configuration */
 typedef struct {
     adc_regs* adc;
-    adc_channels channels[];
-    uint8_t size;
+    uint8_t no_of_channels;
+    adc_channels channels[10];
 } adc_config;
 
 /* function prototypes */

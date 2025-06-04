@@ -26,8 +26,10 @@ int main()
     /* adc config example */
     adc_config* config;
     config->adc = ADC1;
-    config->adc_channels = [channel0,channel1,channel2];
-    config->size = 3;
+    config->channels[0] = channel0;
+    config->channels[1] = channel9;
+    config->channels[2] = channel7;
+    config->no_of_channels = 3;
     adc_init(config);
 
     while(1)
