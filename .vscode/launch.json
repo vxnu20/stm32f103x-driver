@@ -24,6 +24,7 @@
                 "break main",
                 "continue"
             ],
+            "svdPath": "${workspaceFolder}/STM32F103.svd",
         }
     ]
 }
