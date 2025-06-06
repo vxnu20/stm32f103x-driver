@@ -19,10 +19,16 @@ void adc_init(adc_config config)
     /* set the conversion sequence */
     adc_internal_set_sequence(config);
     /* set conversion sequence length */
+    config.adc->SQR1 &= ~(7 << 20);
     config.adc->SQR1 |= ((config.no_of_channels-1) << 20);
+    /* select ext trigger as as swstart */
+    config.adc->CR2 |= ADC_CR2_EXTSEL_SWSTART;
+    /* enable external trigger */
+    config.adc->CR2 |= ADC_CR2_EXTTRIG_EN;
     /* enable adc module */
     config.adc->CR2 |= ADC_CR2_ADON_SET;
-    config.adc->CR2 |= (1<<2);
+    /* start again */
+    config.adc->CR2 |= ADC_CR2_ADON_SET;
 }
 
 void adc_start_conversion(adc_regs* adc)

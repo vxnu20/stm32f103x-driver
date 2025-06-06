@@ -8,6 +8,8 @@
 #define ADC_ADC1_OFFSET         (0x0UL)
 #define ADC_ADC2_OFFSET         (0x400UL)
 #define ADC_CR2_ADON_SET        (1<<0)
+#define ADC_CR2_EXTSEL_SWSTART  (7<<17)
+#define ADC_CR2_EXTTRIG_EN      (1<<20)
 #define ADC_CR2_SWSTART_SET     (1<<22)
 #define ADC_SR_EOC_SET          (1<<1)
 #define ADC_MAX_CHANNELS        (10)
