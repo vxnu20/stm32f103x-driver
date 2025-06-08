@@ -8,7 +8,7 @@
 
 int main()
 {
-    char buffer[20];
+    // char buffer[20];
 
     /* enable clock for PORT c*/
     RCC->APB2ENR |= APB2ENR_PORTC;
@@ -20,7 +20,7 @@ int main()
     /* uart1 for logging purpose */
     gpio_set_mode(GPIO_PORTA, 9, GPIO_MODE_OUT2MHZ, ALT_PUSH_PULL);
     gpio_set_mode(GPIO_PORTA, 10, GPIO_MODE_IN, FLOATING_INPUT);
-    usart_init(USART1, USART_DEFAULT_BAUD);
+    // usart_init(USART1, USART_DEFAULT_BAUD);
 
     /* enable system tick */
     systick_init(CPU_DEFAULT_FREQ/1000);
@@ -70,9 +70,9 @@ int main()
     /* adc config end */
     while(1)
     {
-        adc_start_conversion(config.adc);
+        // adc_start_conversion(config.adc);
         _delay(200);
-        uint32_t value = adc_read_value(config.adc);
+        // uint32_t value = adc_read_value(config.adc);
         // sprintf(buffer, "adc value -> %d \n", value);
         // usart_write_string(USART1,buffer);
         _delay(200);
