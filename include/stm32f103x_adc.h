@@ -8,6 +8,7 @@
 #define ADC_ADC1_OFFSET         (0x0UL)
 #define ADC_ADC2_OFFSET         (0x400UL)
 #define ADC_CR2_ADON_SET        (1<<0)
+#define ADC_CR2_CONT_SET        (1<<1)
 #define ADC_CR2_CAL_SET         (1<<2)
 #define ADC_CR2_RSTCAL_SET      (1<<3)
 #define ADC_CR2_EXTSEL_SWSTART  (7<<17)
@@ -58,6 +59,12 @@ typedef enum {
     channel10
 }adc_channels;
 
+/* adc conversion mode */
+typedef enum {
+    single_conversion,
+    continuous_conversion
+}adc_conversion_mode;
+
 typedef enum {
     adc_sampling1_5,
     adc_sampling7_5,
@@ -79,6 +86,7 @@ typedef struct {
 typedef struct {
     adc_regs* adc;
     uint8_t no_of_channels;
+    adc_conversion_mode conversion_mode;
     adc_channel_config channel_config[ADC_MAX_CHANNELS];
 } adc_config;
 

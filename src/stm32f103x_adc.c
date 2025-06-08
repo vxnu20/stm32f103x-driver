@@ -19,6 +19,14 @@ void adc_init(adc_config config)
     /* enable adc module */
     config.adc->CR2 |= ADC_CR2_ADON_SET;
 
+    /* set conversion mode */
+    /* clear the conversion, by default single conversion */
+    config.adc->CR2 &= ~(ADC_CR2_CONT_SET);
+    if(config.conversion_mode == continuous_conversion)
+    {
+        config.adc->CR2 |= ADC_CR2_CONT_SET;
+    }
+
     /* set the conversion sequence */
     adc_internal_set_sequence(config);
 
