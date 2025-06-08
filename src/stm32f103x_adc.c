@@ -16,17 +16,34 @@ void adc_init(adc_config config)
     {
         return;
     }
+    /* enable adc module */
+    config.adc->CR2 |= ADC_CR2_ADON_SET;
+
     /* set the conversion sequence */
     adc_internal_set_sequence(config);
+
     /* set conversion sequence length */
     config.adc->SQR1 &= ~(7 << 20);
     config.adc->SQR1 |= ((config.no_of_channels-1) << 20);
+
+    /* set adc sampling time*/
+    adc_internal_set_sampling_time(config);
+
     /* select ext trigger as as swstart */
     config.adc->CR2 |= ADC_CR2_EXTSEL_SWSTART;
     /* enable external trigger */
     config.adc->CR2 |= ADC_CR2_EXTTRIG_EN;
-    /* enable adc module */
-    config.adc->CR2 |= ADC_CR2_ADON_SET;
+
+    /* enable the calib registers */
+    config.adc->CR2 |= ADC_CR2_RSTCAL_SET;
+    /* wait until the calib is completed */
+    while(config.adc->CR2 & ADC_CR2_RSTCAL_SET) {}
+
+    /* start the calibration*/
+    config.adc->CR2 |= ADC_CR2_CAL_SET;
+    /* wait until the calib is completed */
+    while(config.adc->CR2 & ADC_CR2_CAL_SET) {}
+
     /* start again */
     config.adc->CR2 |= ADC_CR2_ADON_SET;
 }
@@ -49,7 +66,7 @@ static void adc_internal_set_sequence(adc_config config)
 {
     for(uint8_t i = 0; i < config.no_of_channels && i < 16; i++) {
         uint8_t reg_pos = i % 6;  // Position within register (0-5)
-        uint32_t channel_bits = config.channels[i] << (reg_pos * 5);
+        uint32_t channel_bits = config.channel_config[i].channel << (reg_pos * 5);
         
         if(i < 6)
             config.adc->SQR3 |= channel_bits;
@@ -57,5 +74,17 @@ static void adc_internal_set_sequence(adc_config config)
             config.adc->SQR2 |= channel_bits;
         else
             config.adc->SQR1 |= channel_bits;
+    }
+}
+
+static void adc_internal_set_sampling_time(adc_config config)
+{
+    for(uint8_t i = 0; i<config.no_of_channels && i< 16; i++)
+    {
+        uint8_t ch = config.channel_config[i].channel;
+        volatile uint32_t* smpr_reg = (ch <= 9) ? &config.adc->SMPR2 : &config.adc->SMPR1;
+        uint8_t pos = (ch <=9 ) ? ch : (ch - 10);
+        
+        *smpr_reg |= (config.channel_config[i].sampling_time << (pos * 3));
     }
 }

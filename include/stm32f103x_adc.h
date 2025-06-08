@@ -8,6 +8,8 @@
 #define ADC_ADC1_OFFSET         (0x0UL)
 #define ADC_ADC2_OFFSET         (0x400UL)
 #define ADC_CR2_ADON_SET        (1<<0)
+#define ADC_CR2_CAL_SET         (1<<2)
+#define ADC_CR2_RSTCAL_SET      (1<<3)
 #define ADC_CR2_EXTSEL_SWSTART  (7<<17)
 #define ADC_CR2_EXTTRIG_EN      (1<<20)
 #define ADC_CR2_SWSTART_SET     (1<<22)
@@ -52,14 +54,32 @@ typedef enum {
     channel6,
     channel7,
     channel8,
-    channel9
+    channel9,
+    channel10
 }adc_channels;
+
+typedef enum {
+    adc_sampling1_5,
+    adc_sampling7_5,
+    adc_sampling13_5,
+    adc_sampling28_5,
+    adc_sampling41_5,
+    adc_sampling55_5,
+    adc_sampling71_5,
+    adc_sampling239_5
+}adc_sampling_time;
+
+/* individual channel properties */
+typedef struct {
+    adc_channels channel;
+    adc_sampling_time sampling_time;
+}adc_channel_config;
 
 /* structure to hold the adc configuration */
 typedef struct {
     adc_regs* adc;
     uint8_t no_of_channels;
-    adc_channels channels[ADC_MAX_CHANNELS];
+    adc_channel_config channel_config[ADC_MAX_CHANNELS];
 } adc_config;
 
 /* function prototypes */
@@ -67,3 +87,4 @@ void adc_init(adc_config);
 void adc_start_conversion(adc_regs*);
 uint32_t adc_read_value(adc_regs*);
 static void adc_internal_set_sequence(adc_config);
+static void adc_internal_set_sampling_time(adc_config);
