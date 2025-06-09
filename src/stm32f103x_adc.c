@@ -44,7 +44,7 @@ void adc_init(adc_config config)
 
     /* enable the calib registers */
     config.adc->CR2 |= ADC_CR2_RSTCAL_SET;
-    /* wait until the calib is completed */
+    /* wait until the calib registers are enabled */
     while(config.adc->CR2 & ADC_CR2_RSTCAL_SET) {}
 
     /* start the calibration*/
