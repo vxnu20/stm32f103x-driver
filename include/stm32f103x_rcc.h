@@ -12,7 +12,11 @@
 #define APB2ENR_PORTC       (1<<4)
 #define APB2ENR_ADC1        (1<<9)
 #define APB2ENR_ADC2        (1<<10)
+#define APB2ENR_TIM1        (1<<11)
 #define APB2ENR_USART1      (1<<14)
+#define APB1ENR_TIM2        (1<<0)
+#define APB1ENR_TIM3        (1<<1)
+#define APB1ENR_TIM4        (1<<2)
 #define APB1ENR_USART2      (1<<17)
 #define APB1ENR_USART3      (1<<18)
 
