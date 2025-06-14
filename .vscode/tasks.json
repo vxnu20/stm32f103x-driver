@@ -29,6 +29,15 @@
         "isDefault": false
       },
       "problemMatcher": []
+    },
+    {
+      "label": "All",
+      "dependsOrder": "sequence",
+      "dependsOn": ["Clean", "Build", "Flash"],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
     }
   ]
 }
