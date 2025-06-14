@@ -4,17 +4,24 @@
 #include "stm32f103x_rcc.h"
 
 /* macros for timer */
-#define AC_TIMER_BASE               (0x40012C00)  /* advanced control registers */
+#define AC_TIMER_BASE               (0x40012C00UL)  /* advanced control registers */
 #define GN_TIMER_BASE               (0x40000000UL)  /* general purpose register */
-#define TIM1_OFFSET                 (0UL)
-#define TIM2_OFFSET                 (0UL)
-#define TIM3_OFFSET                 (400UL)
-#define TIM4_OFFSET                 (800UL)
+#define TIM_CR1_CEN                 (1<<0)
+#define TIM_SR_UF                   (1<<0)
+#define TIM1_OFFSET                 (0x0UL)
+#define TIM2_OFFSET                 (0x0UL)
+#define TIM3_OFFSET                 (0x400UL)
+#define TIM4_OFFSET                 (0x800UL)
 
-#define TIM1                        ((timer_regs *) AC_TIMER_BASE + TIM1_OFFSET)
-#define TIM2                        ((timer_regs *) GN_TIMER_BASE + TIM2_OFFSET)
-#define TIM3                        ((timer_regs *) GN_TIMER_BASE + TIM3_OFFSET)
-#define TIM4                        ((timer_regs *) GN_TIMER_BASE + TIM4_OFFSET)
+/* default values */
+#define TIM_DEFAULT_PRE_SCLAR       (7999UL) /* default pre-scalar value for 8MHz clock */
+#define TIM_DEFAULT_AUTO_RELOAD     (999UL)  /* default auto reload value for 1 second */
+
+/* hardware timers */
+#define TIM1                        ((timer_regs *) (AC_TIMER_BASE + TIM1_OFFSET))
+#define TIM2                        ((timer_regs *) (GN_TIMER_BASE + TIM2_OFFSET))
+#define TIM3                        ((timer_regs *) (GN_TIMER_BASE + TIM3_OFFSET))
+#define TIM4                        ((timer_regs *) (GN_TIMER_BASE + TIM4_OFFSET))
 
 /* structure to hold the registers */
 typedef struct {
@@ -42,7 +49,11 @@ typedef struct {
 
 typedef struct {
     timer_regs* timer;
+    uint16_t prescalar;
+    uint16_t auto_reload;
+    uint8_t enable_interrupt;
 }timer_config;
 
 /* function prototypes */
-void timer_init(timer_config); 
+void timer_init(timer_config);
+uint16_t timer_read_count(timer_regs*);
