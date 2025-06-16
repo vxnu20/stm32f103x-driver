@@ -1,8 +1,9 @@
+#ifndef STM32F103X_USART_H
+#define STM32F103X_USART_H
+
 /* required header files */
 #include <stdint.h>
 #include <stdio.h>
-
-#include "stm32f103x_rcc.h"
 
 /* macros */
 #define USART1                  (( usart_regs *) 0x40013800UL)
@@ -35,3 +36,5 @@ void usart_init(usart_regs*, unsigned long);
 void usart_write(usart_regs*, char);
 void usart_write_string(usart_regs*, const char *);
 char usart_read(usart_regs*);
+
+#endif // STM32F103X_USART_H

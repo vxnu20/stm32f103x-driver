@@ -1,21 +1,7 @@
 #include "stm32f103x_adc.h"
 
-
 void adc_init(adc_config config)
 {
-    /* enable the respective clock for ADC */
-    if(config.adc == ADC1)
-    {
-        RCC->APB2ENR |= APB2ENR_ADC1;
-    }
-    else if(config.adc == ADC2)
-    {
-        RCC->APB2ENR |= APB2ENR_ADC2;
-    }
-    else
-    {
-        return;
-    }
     /* enable adc module */
     config.adc->CR2 |= ADC_CR2_ADON_SET;
 
