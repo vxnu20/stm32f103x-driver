@@ -1,7 +1,8 @@
+#ifndef STM32F103X_TIMER_H
+#define STM32F103X_TIMER_H
+
 /* required header files */
 #include <stdint.h>
-
-#include "stm32f103x_rcc.h"
 
 /* macros for timer */
 #define AC_TIMER_BASE               (0x40012C00UL)  /* advanced control registers */
@@ -57,3 +58,5 @@ typedef struct {
 /* function prototypes */
 void timer_init(timer_config);
 uint16_t timer_read_count(timer_regs*);
+
+#endif // STM32F103X_TIMER_H

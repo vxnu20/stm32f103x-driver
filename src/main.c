@@ -9,7 +9,7 @@
 
 int main()
 {
-    char buffer[20];
+    // char buffer[20];
 
     /* enable clock for peripherals */
 
@@ -24,6 +24,10 @@ int main()
     // rcc_enable_gpio_clock(GPIO_PORTA);
     // rcc_enable_gpio_clock(GPIO_PORTB);
     // rcc_enable_gpio_clock(GPIO_PORTC);
+    // rcc_enable_timer_clock(TIM1);
+    // rcc_enable_timer_clock(TIM2);
+    // rcc_enable_timer_clock(TIM3);
+    // rcc_enable_timer_clock(TIM4);
 
     /* onboard user led */
     gpio_set_mode(GPIO_PORTC, 13, GPIO_MODE_OUT2MHZ, GN_PUSH_PULL);
@@ -98,8 +102,8 @@ int main()
 
         // uint32_t value = adc_read_value(config.adc);
         uint16_t count = timer_read_count(config.timer);
-        sprintf(buffer, "timer count -> %d \n", count);
-        usart_write_string(USART1,buffer);
+        // sprintf(buffer, "timer count -> %d \n", count);
+        // usart_write_string(USART1,buffer);
     }
 
     return 0;

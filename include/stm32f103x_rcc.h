@@ -5,6 +5,7 @@
 #include "stm32f103x_gpio.h"
 #include "stm32f103x_usart.h"
 #include "stm32f103x_adc.h"
+#include "stm32f103x_timer.h"
 
 /* clock specific macros */
 #define CPU_DEFAULT_FREQ       (8000000UL)
@@ -45,5 +46,6 @@ typedef struct {
 void rcc_enable_gpio_clock(gpio_regs*);
 void rcc_enable_usart_clock(usart_regs*);
 void rcc_enable_adc_clock(adc_regs*);
+void rcc_enable_timer_clock(timer_regs*);
 
 #endif // STM32F103X_RCC_H
