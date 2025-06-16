@@ -1,8 +1,8 @@
 #include "stm32f103x_gpio.h"
 #include "stm32f103x_systick.h"
-#include "stm32f013x_usart.h"
-#include "stm32f103x_clock.h"
+#include "stm32f103x_usart.h"
 #include "stm32f103x_adc.h"
+#include "stm32f103x_rcc.h"
 #include "stm32f103x_timer.h"
 #include <stdio.h>
 
@@ -11,10 +11,20 @@ int main()
 {
     char buffer[20];
 
-    /* enable clock for PORT c*/
-    RCC->APB2ENR |= APB2ENR_PORTC;
-    RCC->APB2ENR |= APB2ENR_PORTA;
-    
+    /* enable clock for peripherals */
+
+    // rcc_enable_adc_clock(ADC1);
+    // rcc_enable_adc_clock(ADC2);
+    // rcc_enable_gpio_clock(GPIO_PORTA);
+    // rcc_enable_gpio_clock(GPIO_PORTB);
+    // rcc_enable_gpio_clock(GPIO_PORTC);
+    // rcc_enable_usart_clock(USART1);
+    // rcc_enable_usart_clock(USART2);
+    // rcc_enable_usart_clock(USART3);
+    // rcc_enable_gpio_clock(GPIO_PORTA);
+    // rcc_enable_gpio_clock(GPIO_PORTB);
+    // rcc_enable_gpio_clock(GPIO_PORTC);
+
     /* onboard user led */
     gpio_set_mode(GPIO_PORTC, 13, GPIO_MODE_OUT2MHZ, GN_PUSH_PULL);
     
