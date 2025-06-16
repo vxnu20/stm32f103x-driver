@@ -1,5 +1,12 @@
 #ifndef STM32F103X_RCC_H
 #define STM32F103X_RCC_H
+/* required header files for rcc */
+#include "stm32f103x_gpio.h"
+#include "stm32f103x_uasrt.h"
+#include "stm32f103x_adc.h"
+
+/* clock specific macros */
+#define CPU_DEFAULT_FREQ       (8000000UL)
 
 /* macros for reset & clock control RCC*/
 #define RCC_BASE_ADDR       (0x40021000UL)
@@ -28,5 +35,10 @@ typedef struct {
     volatile uint32_t BDCR;             /* backup domain control register */
     volatile uint32_t CSR;              /* control status register */ 
 }rcc_regs;
+
+// function prototypes
+void rcc_enable_gpio_clock(gpio_regs* gpio);
+void rcc_enable_usart_clock(usart_regs* usart);
+void rcc_enable_adc_clock(adc_regs* adc);
 
 #endif // STM32F103X_RCC_H
