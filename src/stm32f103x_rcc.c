@@ -45,11 +45,11 @@ void rcc_enable_usart_clock(usart_regs* usart)
 void rcc_enable_adc_clock(adc_regs* adc)
 {
     /* enable the respective clock for ADC */
-    if(config.adc == ADC1)
+    if(adc == ADC1)
     {
         RCC->APB2ENR |= APB2ENR_ADC1;
     }
-    else if(config.adc == ADC2)
+    else if(adc == ADC2)
     {
         RCC->APB2ENR |= APB2ENR_ADC2;
     }

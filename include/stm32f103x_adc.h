@@ -1,7 +1,8 @@
+#ifndef STM32F103X_ADC_H
+#define STM32F103X_ADC_H
+
 /* Header files */
 #include <stdint.h>
-
-#include "stm32f103x_rcc.h"
 
 /* macros of ADC driver */
 #define ADC_BASE_ADDR           (0x40012400UL)
@@ -96,3 +97,5 @@ void adc_start_conversion(adc_regs*);
 uint32_t adc_read_value(adc_regs*);
 static void adc_internal_set_sequence(adc_config);
 static void adc_internal_set_sampling_time(adc_config);
+
+#endif // STM32F103X_ADC_H

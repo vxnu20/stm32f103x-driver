@@ -1,3 +1,6 @@
+#ifndef STM32F103X_GPIO_H
+#define STM32F103X_GPIO_H
+
 /* Header files */
 #include <stdint.h>
 #include <stdbool.h>
@@ -69,3 +72,5 @@ void gpio_pin_toggle(gpio_regs*, uint8_t);
 void gpio_pin_set(gpio_regs*, uint8_t pin);
 void gpio_pin_reset(gpio_regs*, uint8_t pin);
 bool gpio_pin_read(gpio_regs*, uint8_t pin);
+
+#endif // STM32F103X_GPIO_H

@@ -1,6 +1,5 @@
 #include "stm32f103x_adc.h"
 
-
 void adc_init(adc_config config)
 {
     /* enable adc module */

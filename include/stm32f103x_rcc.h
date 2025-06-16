@@ -1,8 +1,9 @@
 #ifndef STM32F103X_RCC_H
 #define STM32F103X_RCC_H
+
 /* required header files for rcc */
 #include "stm32f103x_gpio.h"
-#include "stm32f103x_uasrt.h"
+#include "stm32f103x_usart.h"
 #include "stm32f103x_adc.h"
 
 /* clock specific macros */
@@ -37,8 +38,8 @@ typedef struct {
 }rcc_regs;
 
 // function prototypes
-void rcc_enable_gpio_clock(gpio_regs* gpio);
-void rcc_enable_usart_clock(usart_regs* usart);
-void rcc_enable_adc_clock(adc_regs* adc);
+void rcc_enable_gpio_clock(gpio_regs*);
+void rcc_enable_usart_clock(usart_regs*);
+void rcc_enable_adc_clock(adc_regs*);
 
 #endif // STM32F103X_RCC_H
