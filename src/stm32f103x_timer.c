@@ -30,28 +30,12 @@ uint16_t timer_read_count(timer_regs* timer)
 void timer_enable_output_compare(timer_regs* timer, timer_channel_config config)
 {
     /* set the compare mode */
-    switch(config.channel) {
-        case t_channel1:
-            timer->CCMR1 |= (config.mode << 4);    // Set CH1 mode bits
-            timer->CCER |= (1 << 0);               // Enable CH1
-        break;
-            
-        case t_channel2:
-            timer->CCMR1 |= (config.mode << 12);   // Set CH2 mode bits  
-            timer->CCER |= (1 << 4);               // Enable CH2
-        break;
-            
-        case t_channel3:
-            timer->CCMR2 |= (config.mode << 4);    // Set CH3 mode bits
-            timer->CCER |= (1 << 8);               // Enable CH3
-        break;
-            
-        case t_channel4:
-            timer->CCMR2 |= (config.mode << 12);   // Set CH4 mode bits
-            timer->CCER |= (1 << 12);              // Enable CH4
-            break;
-            
-        default:
-            return;  // Invalid channel
-    }
+    volatile uint32_t *ccmr = (config.channel <= t_channel2) ? &timer->CCMR1 : &timer->CCMR2;
+    /* shift 4 for 1 and 4 , shift 12 for 3, 4 */
+    uint8_t shift = (config.channel % 2) ? 4 : 12;
+    
+    *ccmr |= (config.mode << shift);
+
+    /* enable respective channel */
+    timer->CCER |= (1 << ((config.channel - 1) * 4));
 }
