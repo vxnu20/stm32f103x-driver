@@ -17,12 +17,32 @@
 /* default values */
 #define TIM_DEFAULT_PRE_SCLAR       (7999UL) /* default pre-scalar value for 8MHz clock */
 #define TIM_DEFAULT_AUTO_RELOAD     (999UL)  /* default auto reload value for 1 second */
+#define TIM_MAX_CHANNELS            (4UL)
 
 /* hardware timers */
 #define TIM1                        ((timer_regs *) (AC_TIMER_BASE + TIM1_OFFSET))
 #define TIM2                        ((timer_regs *) (GN_TIMER_BASE + TIM2_OFFSET))
 #define TIM3                        ((timer_regs *) (GN_TIMER_BASE + TIM3_OFFSET))
 #define TIM4                        ((timer_regs *) (GN_TIMER_BASE + TIM4_OFFSET))
+
+/* timer channels */
+typedef enum {
+    channel1,
+    channel2,
+    channel3,
+    channel4
+}timer_channel;
+
+typedef enum {
+    frozen_mode,            /* Generate timing interrupts without affecting output pins. */
+    set_active_on_match,    /* When counter reaches the compare value, output goes HIGH and stays HIGH. */
+    set_inactive_on_match,  /* When counter reaches compare value, output goes LOW and stays LOW. */
+    toggle_mode,            /* Output flips state each time counter matches compare value.*/
+    force_inactive,         /* Output is immediately forced LOW regardless of counter value.*/
+    force_active,           /* Output is immediately forced HIGH regardless of counter value.*/
+    pwm_mode_one,           /* Output is HIGH when counter < compare value & Output is LOW when counter ≥ compare value.*/
+    pwm_mode_two            /* Output is LOW when counter < compare value & Output is HIGH when counter ≥ compare value*/
+}timer_channel_mode;
 
 /* structure to hold the registers */
 typedef struct {
@@ -48,15 +68,24 @@ typedef struct {
     volatile uint32_t DMAR;     /* DMA address for full register */
 }timer_regs;
 
+/* channel config */
+typedef struct {
+    timer_channel channel;
+    timer_channel_mode mode;
+}timer_channel_config;
+
+/* init values */
 typedef struct {
     timer_regs* timer;
     uint16_t prescalar;
     uint16_t auto_reload;
-    uint8_t enable_interrupt;
 }timer_config;
 
 /* function prototypes */
-void timer_init(timer_config);
+void timer_init(timer_regs*, timer_config);
+void timer_start(timer_regs*);
+void timer_stop(timer_regs*);
 uint16_t timer_read_count(timer_regs*);
+void timer_en_output_compare_mode(timer_regs*, timer_channel_config);
 
 #endif // STM32F103X_TIMER_H

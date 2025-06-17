@@ -87,12 +87,18 @@ int main()
 
     /* adc config end */
 
+    /* sample timer config for testing purpose */
+    rcc_enable_timer_clock(TIM2);
     timer_config config;
-    config.timer = TIM1;
+    config.timer = TIM2;
     config.prescalar = TIM_DEFAULT_PRE_SCLAR;
     config.auto_reload = TIM_DEFAULT_AUTO_RELOAD;
     timer_init(config);
+    
 
+    timer_start(config.timer);
+
+    /* timer config end */
     while(1)
     {
         
