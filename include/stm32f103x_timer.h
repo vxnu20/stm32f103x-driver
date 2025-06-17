@@ -27,10 +27,10 @@
 
 /* timer channels */
 typedef enum {
-    channel1,
-    channel2,
-    channel3,
-    channel4
+    t_channel1,
+    t_channel2,
+    t_channel3,
+    t_channel4
 }timer_channel;
 
 typedef enum {
@@ -82,7 +82,7 @@ typedef struct {
 }timer_config;
 
 /* function prototypes */
-void timer_init(timer_regs*, timer_config);
+void timer_init(timer_config);
 void timer_start(timer_regs*);
 void timer_stop(timer_regs*);
 uint16_t timer_read_count(timer_regs*);

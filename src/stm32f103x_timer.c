@@ -13,13 +13,13 @@ void timer_init(timer_config config)
 void timer_start(timer_regs* timer)
 {
     /* enable the counter */
-    config.timer->CR1 |= TIM_CR1_CEN;
+    timer->CR1 |= TIM_CR1_CEN;
 }
 
 void timer_stop(timer_regs* timer)
 {
     /* disable the counter */
-    config.timer->CR1 &= ~TIM_CR1_CEN;
+    timer->CR1 &= ~TIM_CR1_CEN;
 }
 
 uint16_t timer_read_count(timer_regs* timer)
@@ -31,22 +31,22 @@ void timer_enable_output_compare(timer_regs* timer, timer_channel_config config)
 {
     /* set the compare mode */
     switch(config.channel) {
-        case channel1:
+        case t_channel1:
             timer->CCMR1 |= (config.mode << 4);    // Set CH1 mode bits
             timer->CCER |= (1 << 0);               // Enable CH1
         break;
             
-        case channel2:
+        case t_channel2:
             timer->CCMR1 |= (config.mode << 12);   // Set CH2 mode bits  
             timer->CCER |= (1 << 4);               // Enable CH2
         break;
             
-        case channel3:
+        case t_channel3:
             timer->CCMR2 |= (config.mode << 4);    // Set CH3 mode bits
             timer->CCER |= (1 << 8);               // Enable CH3
         break;
             
-        case channel4:
+        case t_channel4:
             timer->CCMR2 |= (config.mode << 12);   // Set CH4 mode bits
             timer->CCER |= (1 << 12);              // Enable CH4
             break;
