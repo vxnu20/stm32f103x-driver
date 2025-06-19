@@ -13,6 +13,7 @@
 #define TIM2_OFFSET                 (0x0UL)
 #define TIM3_OFFSET                 (0x400UL)
 #define TIM4_OFFSET                 (0x800UL)
+#define TIMx_CCMR_CCS_CLEAR         (0x03UL)
 
 /* default values */
 #define TIM_DEFAULT_PRE_SCLAR       (7999UL) /* default pre-scalar value for 8MHz clock */
@@ -42,7 +43,14 @@ typedef enum {
     force_active,           /* Output is immediately forced HIGH regardless of counter value.*/
     pwm_mode_one,           /* Output is HIGH when counter < compare value & Output is LOW when counter ≥ compare value.*/
     pwm_mode_two            /* Output is LOW when counter < compare value & Output is HIGH when counter ≥ compare value*/
-}timer_channel_mode;
+}timer_channel_output_mode;
+
+typedef enum {
+    /* 0- channel is configured as output */
+    channel_ic2_ti1 = 0x01; /* IC2 is mapped on TI2 */
+    channel_i2c_ti2;        /* IC2 is mapped on TI1 */
+    channel_i2c_trc;        /*  IC2 is mapped on TRC*/
+}timer_input_capture_selection;
 
 /* structure to hold the registers */
 typedef struct {
@@ -68,11 +76,17 @@ typedef struct {
     volatile uint32_t DMAR;     /* DMA address for full register */
 }timer_regs;
 
-/* channel config */
+/* channel output config */
 typedef struct {
     timer_channel channel;
-    timer_channel_mode mode;
-}timer_channel_config;
+    timer_channel_output_mode mode;
+}timer_channel_output_config;
+
+/* channel input config */
+typedef struct {
+    timer_channel channel;
+    timer_input_capture_selection selection;
+}timer_channel_input_config;
 
 /* init values */
 typedef struct {
@@ -86,6 +100,7 @@ void timer_init(timer_config);
 void timer_start(timer_regs*);
 void timer_stop(timer_regs*);
 uint16_t timer_read_count(timer_regs*);
-void timer_en_output_compare_mode(timer_regs*, timer_channel_config);
+void timer_enable_output_compare(timer_regs*, timer_channel_output_config);
+void timer_enable_input_capure(timer_regs*);
 
 #endif // STM32F103X_TIMER_H
