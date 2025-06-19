@@ -83,3 +83,8 @@ void rcc_enable_timer_clock(timer_regs* timer)
         return;
     }
 }
+
+void rcc_enable_afio_clock()
+{
+    RCC->APB2ENR |= APB2ENR_AFIO;
+}
