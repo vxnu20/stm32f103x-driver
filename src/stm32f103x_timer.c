@@ -40,14 +40,26 @@ void timer_enable_output_compare(timer_regs* timer, timer_channel_output_config 
     /* set the output compare mode */
     /* shift 4 for 1 and 3 , shift 12 for 2 and 4 */
     shift = (config.channel % 2) ? 4 : 12;
-    
     *ccmr |= (config.mode << shift);
 
     /* enable respective channel */
     timer->CCER |= (1 << ((config.channel - 1) * 4));
 }
 
-void timer_enable_input_capture(timer_regs* timer)
+void timer_enable_input_capture(timer_regs* timer, timer_channel_input_config config)
 {
+    /* which ccmr ? */
+    volatile uint32_t *ccmr = (config.channel <= t_channel2) ? &timer->CCMR1 : &timer->CCMR2;
 
+    /* set the input capture selection bits*/
+    /* shift 0 for channel 1 and 3 and shift shift 12 for 2 and 4 */
+    uint8_t shift = (config.channel % 2) ? 0 : 8;
+    *ccmr |= (config.selection << shift);
+
+    /* set the prescalar */
+    /* shift 2 for channel 1 and 3  and shift 10 for channel 2 and 4 */
+    shift = (config.channel % 2) ? 2 : 10;
+    *ccmr |= (config.prescalar << shift);
+
+    timer->CCER |= (1 << ((config.channel - 1) * 4));
 }

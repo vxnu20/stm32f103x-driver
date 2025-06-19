@@ -95,10 +95,16 @@ int main()
     config.auto_reload = TIM_DEFAULT_AUTO_RELOAD;
     timer_init(config);
     /* timer channel config */
-    timer_channel_output_config t_config;
-    t_config.channel = t_channel1;
-    t_config.mode = toggle_mode;
-    timer_enable_output_compare(TIM2,t_config);
+    timer_channel_output_config out_config;
+    out_config.channel = t_channel1;
+    out_config.mode = t_toggle_mode;
+    timer_enable_output_compare(TIM2,out_config);
+
+    timer_channel_input_config in_config;
+    in_config.channel = t_channel2;
+    in_config.prescalar = t_no_prescalar;
+    in_config.selection = t_channel_ic2_ti1;
+    timer_enable_input_capture(TIM2, in_config);
 
     timer_start(config.timer);
 

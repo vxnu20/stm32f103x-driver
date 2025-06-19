@@ -35,22 +35,29 @@ typedef enum {
 }timer_channel;
 
 typedef enum {
-    frozen_mode,            /* Generate timing interrupts without affecting output pins. */
-    set_active_on_match,    /* When counter reaches the compare value, output goes HIGH and stays HIGH. */
-    set_inactive_on_match,  /* When counter reaches compare value, output goes LOW and stays LOW. */
-    toggle_mode,            /* Output flips state each time counter matches compare value.*/
-    force_inactive,         /* Output is immediately forced LOW regardless of counter value.*/
-    force_active,           /* Output is immediately forced HIGH regardless of counter value.*/
-    pwm_mode_one,           /* Output is HIGH when counter < compare value & Output is LOW when counter ≥ compare value.*/
-    pwm_mode_two            /* Output is LOW when counter < compare value & Output is HIGH when counter ≥ compare value*/
+    t_frozen_mode,            /* Generate timing interrupts without affecting output pins. */
+    t_set_active_on_match,    /* When counter reaches the compare value, output goes HIGH and stays HIGH. */
+    t_set_inactive_on_match,  /* When counter reaches compare value, output goes LOW and stays LOW. */
+    t_toggle_mode,            /* Output flips state each time counter matches compare value.*/
+    t_force_inactive,         /* Output is immediately forced LOW regardless of counter value.*/
+    t_force_active,           /* Output is immediately forced HIGH regardless of counter value.*/
+    t_pwm_mode_one,           /* Output is HIGH when counter < compare value & Output is LOW when counter ≥ compare value.*/
+    t_pwm_mode_two            /* Output is LOW when counter < compare value & Output is HIGH when counter ≥ compare value*/
 }timer_channel_output_mode;
 
 typedef enum {
     /* 0- channel is configured as output */
-    channel_ic2_ti1 = 0x01, /* IC2 is mapped on TI2 */
-    channel_i2c_ti2,        /* IC2 is mapped on TI1 */
-    channel_i2c_trc        /*  IC2 is mapped on TRC*/
+    t_channel_ic2_ti1 = 0x01, /* IC2 is mapped on TI2 */
+    t_channel_i2c_ti2,        /* IC2 is mapped on TI1 */
+    t_channel_i2c_trc        /*  IC2 is mapped on TRC*/
 }timer_input_capture_selection;
+
+typedef enum {
+    t_no_prescalar,             /* no prescaler, capture is done each time an edge is detected on the capture input */
+    t_cap_two_evts,             /* capture is done once every 2 events */
+    t_cap_four_evts,            /* capture is done once every 4 events */
+    t_cap_eight_evts            /* capture is done once every 8 events */
+}timer_input_capture_prescalar;
 
 /* structure to hold the registers */
 typedef struct {
@@ -86,6 +93,7 @@ typedef struct {
 typedef struct {
     timer_channel channel;
     timer_input_capture_selection selection;
+    timer_input_capture_prescalar prescalar;
 }timer_channel_input_config;
 
 /* init values */
@@ -101,6 +109,6 @@ void timer_start(timer_regs*);
 void timer_stop(timer_regs*);
 uint16_t timer_read_count(timer_regs*);
 void timer_enable_output_compare(timer_regs*, timer_channel_output_config);
-void timer_enable_input_capure(timer_regs*);
+void timer_enable_input_capture(timer_regs*, timer_channel_input_config);
 
 #endif // STM32F103X_TIMER_H
