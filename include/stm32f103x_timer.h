@@ -47,9 +47,9 @@ typedef enum {
 
 typedef enum {
     /* 0- channel is configured as output */
-    channel_ic2_ti1 = 0x01; /* IC2 is mapped on TI2 */
-    channel_i2c_ti2;        /* IC2 is mapped on TI1 */
-    channel_i2c_trc;        /*  IC2 is mapped on TRC*/
+    channel_ic2_ti1 = 0x01, /* IC2 is mapped on TI2 */
+    channel_i2c_ti2,        /* IC2 is mapped on TI1 */
+    channel_i2c_trc        /*  IC2 is mapped on TRC*/
 }timer_input_capture_selection;
 
 /* structure to hold the registers */

@@ -94,7 +94,11 @@ int main()
     config.prescalar = TIM_DEFAULT_PRE_SCLAR;
     config.auto_reload = TIM_DEFAULT_AUTO_RELOAD;
     timer_init(config);
-    
+    /* timer channel config */
+    timer_channel_output_config t_config;
+    t_config.channel = t_channel1;
+    t_config.mode = toggle_mode;
+    timer_enable_output_compare(TIM2,t_config);
 
     timer_start(config.timer);
 
