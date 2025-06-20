@@ -17,7 +17,7 @@ int main()
     // rcc_enable_adc_clock(ADC2);
     // rcc_enable_gpio_clock(GPIO_PORTA);
     // rcc_enable_gpio_clock(GPIO_PORTB);
-    // rcc_enable_gpio_clock(GPIO_PORTC);
+    rcc_enable_gpio_clock(GPIO_PORTC);
     // rcc_enable_usart_clock(USART1);
     // rcc_enable_usart_clock(USART2);
     // rcc_enable_usart_clock(USART3);
@@ -104,6 +104,7 @@ int main()
     in_config.channel = t_channel2;
     in_config.prescalar = t_no_prescalar;
     in_config.selection = t_channel_ic2_ti1;
+    in_config.filter    = no_filter;
     timer_enable_input_capture(TIM2, in_config);
 
     timer_start(config.timer);
@@ -113,9 +114,9 @@ int main()
     {
         
         // while(!(config.timer -> SR & TIM_SR_UF));
-        // gpio_pin_toggle(GPIO_PORTC,13);
+        gpio_pin_toggle(GPIO_PORTC,13);
         // config.timer -> SR &= ~TIM_SR_UF;
-
+        while(!(TIM2->SR & (1<<2))){}
         // uint32_t value = adc_read_value(config.adc);
         uint16_t count = timer_read_count(config.timer);
         // sprintf(buffer, "timer count -> %d \n", count);

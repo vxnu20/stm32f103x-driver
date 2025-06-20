@@ -28,7 +28,7 @@
 
 /* timer channels */
 typedef enum {
-    t_channel1,
+    t_channel1 = 1,
     t_channel2,
     t_channel3,
     t_channel4
@@ -51,6 +51,14 @@ typedef enum {
     t_channel_i2c_ti2,        /* IC2 is mapped on TI1 */
     t_channel_i2c_trc        /*  IC2 is mapped on TRC*/
 }timer_input_capture_selection;
+
+typedef enum {
+    no_filter,
+    fck_int_n_2,
+    fck_int_n_4,
+    fck_int_n_8,
+    /* not completed still pending to add other filters*/
+}timer_input_capture_filter;
 
 typedef enum {
     t_no_prescalar,             /* no prescaler, capture is done each time an edge is detected on the capture input */
@@ -94,6 +102,7 @@ typedef struct {
     timer_channel channel;
     timer_input_capture_selection selection;
     timer_input_capture_prescalar prescalar;
+    timer_input_capture_filter  filter;
 }timer_channel_input_config;
 
 /* init values */
