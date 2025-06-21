@@ -54,10 +54,21 @@ typedef enum {
 
 typedef enum {
     no_filter,
-    fck_int_n_2,
+    fck_int_n_2,    
     fck_int_n_4,
     fck_int_n_8,
-    /* not completed still pending to add other filters*/
+    fck_dts_2_n6,
+    fck_dts_2_n8,
+    fck_dts_4_n6,
+    fck_dts_4_n8,
+    fck_dts_8_n6,
+    fck_dts_8_n8,
+    fck_dts_16_n5,
+    fck_dts_16_n6,
+    fck_dts_16_n8,
+    fck_dts_32_n5,
+    fck_dts_32_n6,
+    fck_dts_32_n8
 }timer_input_capture_filter;
 
 typedef enum {
