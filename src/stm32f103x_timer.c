@@ -33,7 +33,7 @@ void timer_enable_output_compare(timer_regs* timer, timer_channel_output_config 
     volatile uint32_t *ccmr = (config.channel <= t_channel2) ? &timer->CCMR1 : &timer->CCMR2;
 
     /* clear the capture compare selection bits*/
-    /* shift 0 for channel 1 and 3 and shift shift 12 for 2 and 4 */
+    /* shift 0 for channel 1 and 3 and shift 8 for 2 and 4 */
     uint8_t shift = (config.channel % 2) ? 0 : 8;
     *ccmr &= ~(TIMx_CCMR_CCS_CLEAR << shift);
 
@@ -54,6 +54,8 @@ void timer_enable_input_capture(timer_regs* timer, timer_channel_input_config co
     /* set the input capture selection bits*/
     /* shift 0 for channel 1 and 3 and shift 8 for 2 and 4 */
     uint8_t shift = (config.channel % 2) ? 0 : 8;
+    /* clear it first */
+    *ccmr &= ~(TIMx_CCMR_CCS_CLEAR << shift);
     *ccmr |= (config.selection << shift);
 
     /* set the filter */
