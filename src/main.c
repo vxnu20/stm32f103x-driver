@@ -21,13 +21,10 @@ int main()
     // rcc_enable_usart_clock(USART1);
     // rcc_enable_usart_clock(USART2);
     // rcc_enable_usart_clock(USART3);
-    // rcc_enable_gpio_clock(GPIO_PORTA);
-    // rcc_enable_gpio_clock(GPIO_PORTB);
-    // rcc_enable_gpio_clock(GPIO_PORTC);
-    // rcc_enable_timer_clock(TIM1);
+    rcc_enable_timer_clock(TIM1);
     rcc_enable_timer_clock(TIM2);
     rcc_enable_timer_clock(TIM3);
-    // rcc_enable_timer_clock(TIM4);
+    rcc_enable_timer_clock(TIM4);
 
     /* onboard user led */
     gpio_set_mode(GPIO_PORTC, 13, GPIO_MODE_OUT2MHZ, GN_PUSH_PULL);
@@ -89,28 +86,28 @@ int main()
 
     /* sample timer config for testing purpose */
 
-    gpio_set_mode(GPIO_PORTA, 1, GPIO_MODE_OUT10MHZ, ALT_PUSH_PULL);
+    gpio_set_mode(GPIO_PORTB, 9, GPIO_MODE_OUT10MHZ, ALT_PUSH_PULL);
     gpio_set_mode(GPIO_PORTB, 0, GPIO_MODE_IN, FLOATING_INPUT);
 
     timer_config config;
-    config.timer = TIM2;
+    config.timer = TIM4;
     config.prescalar = TIM_DEFAULT_PRE_SCLAR;
     config.auto_reload = TIM_DEFAULT_AUTO_RELOAD;
     timer_init(config);
+
+        /* timer channel config */
+    timer_channel_output_config out_config;
+    out_config.channel = t_channel4;
+    out_config.mode = t_toggle_mode;
+    timer_enable_output_compare(config.timer,out_config);
+    timer_start(config.timer);
+
 
     timer_config s_config;
     s_config.timer = TIM3;
     s_config.prescalar = TIM_DEFAULT_PRE_SCLAR;
     s_config.auto_reload = TIM_DEFAULT_AUTO_RELOAD;
     timer_init(s_config);
-
-    /* timer channel config */
-    timer_channel_output_config out_config;
-    out_config.channel = t_channel2;
-    out_config.mode = t_toggle_mode;
-    timer_enable_output_compare(config.timer,out_config);
-    timer_start(TIM2);
-
     
     timer_channel_input_config in_config;
     in_config.channel = t_channel3;
@@ -118,7 +115,7 @@ int main()
     in_config.selection = t_channel_ic2_ti1;
     in_config.filter    = no_filter;
     timer_enable_input_capture(s_config.timer, in_config);
-    timer_start(TIM3);
+    timer_start(s_config.timer);
 
     /* timer config end */
     while(1)
@@ -127,9 +124,9 @@ int main()
         // while(!(config.timer -> SR & TIM_SR_UF));
         gpio_pin_toggle(GPIO_PORTC,13);
         // config.timer -> SR &= ~TIM_SR_UF;
-        while(!(TIM3->SR & (1<<3))){}
+        while(!(s_config.timer->SR & (1<<t_channel3))){}
         // uint32_t value = adc_read_value(config.adc);
-        uint16_t value = TIM3->CCR3;
+        uint16_t value = s_config.timer->CCR3;
         // sprintf(buffer, "timer value -> %d \n", value);
         // usart_write_string(USART1,buffer);
     }
