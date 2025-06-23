@@ -58,3 +58,33 @@ void rcc_enable_adc_clock(adc_regs* adc)
         return;
     }
 }
+
+void rcc_enable_timer_clock(timer_regs* timer)
+{
+    /* enable timer clock */
+    if(timer == TIM1 && !(RCC->APB2ENR & APB2ENR_TIM1))
+    {
+        RCC->APB2ENR |= APB2ENR_TIM1;
+    }
+    else if(timer == TIM2 && !(RCC->APB1ENR & APB1ENR_TIM2))
+    {
+        RCC->APB1ENR |= APB1ENR_TIM2;
+    }
+    else if(timer == TIM3 && !(RCC->APB1ENR & APB1ENR_TIM3))
+    {
+        RCC->APB1ENR |= APB1ENR_TIM3;
+    }
+    else if(timer == TIM4 && !(RCC->APB1ENR & APB1ENR_TIM4))
+    {
+        RCC->APB1ENR |= APB1ENR_TIM4;
+    }
+    else
+    {
+        return;
+    }
+}
+
+void rcc_enable_afio_clock()
+{
+    RCC->APB2ENR |= APB2ENR_AFIO;
+}
