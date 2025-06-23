@@ -8,6 +8,8 @@ void timer_init(timer_config config)
     config.timer->ARR = config.auto_reload;
     /* clear the counter */
     config.timer->CNT = 0;
+    /* clear the status registers */
+    config.timer->SR = 0;
 }
 
 void timer_start(timer_regs* timer)
