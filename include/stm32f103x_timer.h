@@ -9,6 +9,7 @@
 #define GN_TIMER_BASE               (0x40000000UL)  /* general purpose register */
 #define TIM_CR1_CEN                 (1<<0)
 #define TIM_SR_UF                   (1<<0)
+#define TIMA_BTDR_MOE               (1<<15)
 #define TIM1_OFFSET                 (0x0UL)
 #define TIM2_OFFSET                 (0x0UL)
 #define TIM3_OFFSET                 (0x400UL)

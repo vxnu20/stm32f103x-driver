@@ -42,6 +42,12 @@ void timer_enable_output_compare(timer_regs* timer, timer_channel_output_config 
     shift = (config.channel % 2) ? 4 : 12;
     *ccmr |= (config.mode << shift);
 
+    /* in case of timer 1 (advanced) main output is disabled by default */
+    /* this needs to be enabled */
+    if(timer == TIM1)
+    {
+        timer->BDTR |= TIMA_BTDR_MOE;
+    }
     /* enable respective channel */
     timer->CCER |= (1 << ((config.channel - 1) * 4));
 }
