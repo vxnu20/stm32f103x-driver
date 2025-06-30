@@ -88,3 +88,8 @@ void rcc_enable_afio_clock()
 {
     RCC->APB2ENR |= APB2ENR_AFIO;
 }
+
+void rcc_enable_dma_clock()
+{
+    RCC->AHBENR |= AHBENR_DMA;
+}
