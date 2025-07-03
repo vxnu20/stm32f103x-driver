@@ -91,5 +91,6 @@ void rcc_enable_afio_clock()
 
 void rcc_enable_dma_clock()
 {
-    RCC->AHBENR |= AHBENR_DMA;
+    if(!(RCC->AHBENR & AHBENR_DMA))
+        RCC->AHBENR |= AHBENR_DMA;
 }

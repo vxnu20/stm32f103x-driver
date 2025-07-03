@@ -4,9 +4,12 @@
 /* required header files */
 #include <stdint.h>
 
+#include "stm32f103x_rcc.h"
+
 /* macros for dma */
 #define DMA_PERIPH_BASE_ADDR    (0x40020000UL)
 #define DMA1_OFFSET             (0x0UL)
+#define DMA_CHANNEL_EN          (1<<0)
 
 /* dma peripherals */
 #define DMA1                    (( dma_regs *) (DMA_PERIPH_BASE_ADDR + DMA_OFFSET))
@@ -26,4 +29,16 @@ typedef struct {
     dma_channel_regs CHANNELS[7];
 } dma_regs;
 
+/* struct that hold dma config */
+typedef struct {
+    uint8_t channel;
+    uint32_t source;
+    uint32_t destination;
+    uint32_t length;
+    // direction
+    // fifo
+} dma_config;
+
+/* function prototypes */
+void dma_init(dma_config);
 #endif // STM32F103X_DMA_H
