@@ -7,12 +7,13 @@
 #include "stm32f103x_rcc.h"
 
 /* macros for dma */
-#define DMA_PERIPH_BASE_ADDR    (0x40020000UL)
-#define DMA1_OFFSET             (0x0UL)
-#define DMA_CHANNEL_EN          (1<<0)
+#define DMA_PERIPH_BASE_ADDR        (0x40020000UL)
+#define DMA_OFFSET                  (0x0UL)
+#define DMA_CHANNEL_EN              (1<<0)
+#define DMA_IFCR_CLEAR_ALL_FLAGS    (0x03U)
 
 /* dma peripherals */
-#define DMA1                    (( dma_regs *) (DMA_PERIPH_BASE_ADDR + DMA_OFFSET))
+#define DMA                         (( dma_regs *) (DMA_PERIPH_BASE_ADDR + DMA_OFFSET))
 
 /* sub struct for dma registers */
 typedef struct {
@@ -34,7 +35,7 @@ typedef struct {
     uint8_t channel;
     uint32_t source;
     uint32_t destination;
-    uint32_t length;
+    uint16_t length;
     // direction
     // fifo
 } dma_config;
