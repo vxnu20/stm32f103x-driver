@@ -7,7 +7,7 @@ void dma_init(dma_config config)
     /* clock access enable */
     rcc_enable_dma_clock();
 
-    /* disable the channel */
+    /* disable the channel it is required for writing other registers */
     DMA->CHANNELS[channel].CCR &= ~DMA_CHANNEL_EN;
 
     /* clear all flags related to the channel */
@@ -15,11 +15,27 @@ void dma_init(dma_config config)
     DMA->IFCR |= DMA_IFCR_CLEAR_ALL_FLAGS << (channel * 4);
 
     /* destination address */
+    /* TODO - need to handle peripheral as source */
     DMA->CHANNELS[channel].CPAR = config.destination;
 
     /* source address */
+    /* TODO - need to handle peripheral as source */
     DMA->CHANNELS[channel].CMAR = config.source;
 
     /* set the length */
     DMA->CHANNELS[channel].CNDTR = config.length;
+
+    /* set the direction */
+    DMA->CHANNELS[channel].CCR |= (config.direction << DMA_CHANNEL_CCR_DIR);
+
+    /* INFO - stm32f103 dosen't support FIFO mode */
+
+    /* enable channel */
+    DMA->CHANNELS[channel].CCR |= DMA_CHANNEL_EN;
+
+    /* TODO 
+
+        enable peripheral DMA
+        enable interrupt
+    */
 }
