@@ -12,6 +12,7 @@
 #define DMA_CHANNEL_EN              (1<<0)
 #define DMA_IFCR_CLEAR_ALL_FLAGS    (0x03U)
 #define DMA_CHANNEL_CCR_DIR         (4UL)
+#define DMA_CHANNEL_CCR_MINC        (7UL)
 
 /* dma peripherals */
 #define DMA                         (( dma_regs *) (DMA_PERIPH_BASE_ADDR + DMA_OFFSET))
@@ -39,8 +40,8 @@ typedef enum {
 
 /* memory increment */
 typedef enum {
-    mem_inc_enable,
-    mem_inc_disable
+    mem_inc_disabled,
+    mem_inc_enabled
 }dma_mem_increment;
 
 /* struct that hold dma config */
@@ -55,4 +56,6 @@ typedef struct {
 
 /* function prototypes */
 void dma_init(dma_config);
+void dma_send_data(dma_config, uint8_t*, uint8_t);
+
 #endif // STM32F103X_DMA_H
