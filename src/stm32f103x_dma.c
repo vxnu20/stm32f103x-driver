@@ -14,14 +14,17 @@ void dma_init(dma_config config)
     /* writing 1 will clear the register */
     DMA->IFCR |= DMA_IFCR_CLEAR_ALL_FLAGS << (channel * 4);
 
-    /* destination address */
-    /* TODO - need to handle peripheral as source */
-    DMA->CHANNELS[channel].CPAR = config.destination;
-
-    /* source address */
-    /* TODO - need to handle peripheral as source */
-    DMA->CHANNELS[channel].CMAR = config.source;
-
+    if(config.direction == read_from_memory)
+    {
+        DMA->CHANNELS[channel].CPAR = config.destination;
+        DMA->CHANNELS[channel].CMAR = config.source;
+    }
+    else
+    {
+        DMA->CHANNELS[channel].CMAR = config.destination;
+        DMA->CHANNELS[channel].CPAR = config.source;
+    }
+    
     /* set the length */
     DMA->CHANNELS[channel].CNDTR = config.length;
 
@@ -37,8 +40,6 @@ void dma_init(dma_config config)
     DMA->CHANNELS[channel].CCR |= DMA_CHANNEL_EN;
 
     /* TODO 
-
-        enable peripheral DMA
         enable interrupt
     */
 }
@@ -52,7 +53,14 @@ void dma_send_data(dma_config config, uint8_t *data, uint8_t length)
     DMA->CHANNELS[channel].CCR &= ~DMA_CHANNEL_EN;
 
     // send the data
-    DMA->CHANNELS[channel].CMAR = (uint32_t)data;
+    if(config.direction == read_from_memory)
+    {
+        DMA->CHANNELS[channel].CMAR = (uint32_t)data;
+    }
+    else
+    {
+        DMA->CHANNELS[channel].CPAR = (uint32_t)data;
+    }
     DMA->CHANNELS[channel].CNDTR = length;
 
     /* reenable the channel */

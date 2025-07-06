@@ -21,6 +21,7 @@ void rcc_peripheral_test_init()
     // rcc_enable_timer_clock(TIM3);
     // rcc_enable_timer_clock(TIM4);
     rcc_enable_usart_clock(USART1);
+    rcc_enable_usart_clock(USART2);
 
 }
 
@@ -33,13 +34,13 @@ void user_led_test_init()
 void usart_logging_test_init()
 {
     /* uart1 for logging purpose */
-    gpio_set_mode(GPIO_PORTA, 9, GPIO_MODE_OUT2MHZ, ALT_PUSH_PULL);
+    gpio_set_mode(GPIO_PORTA, 2, GPIO_MODE_OUT2MHZ, ALT_PUSH_PULL);
     gpio_set_mode(GPIO_PORTA, 10, GPIO_MODE_IN, FLOATING_INPUT);
-    usart_init(USART1, USART_DEFAULT_BAUD);
+    usart_init(USART2, USART_DEFAULT_BAUD);
     /* uart config end */
     /* usart dma config */
-    usart_enable_rx_dma(USART1);
-    usart_enable_tx_dma(USART1);
+    usart_enable_rx_dma(USART2);
+    usart_enable_tx_dma(USART2);
 }
 
 void adc_peripheral_test_init()
@@ -132,24 +133,22 @@ void timer_peripheral_test_init()
 dma_config dconfig;
 void dma_peripheral_test_init()
 {
-    dconfig.channel = 4;
+    dconfig.channel = 7;
     dconfig.direction = read_from_memory;
     dconfig.memory_increment = mem_inc_enabled;
-    dconfig.destination = (uint32_t)&USART1->DR;
+    dconfig.destination = (uint32_t)&USART2->DR;
     dma_init(dconfig);
 }
 
 int main()
 {
-    // char buffer[20];
-
     /* enable system tick */
     systick_init(CPU_DEFAULT_FREQ/1000);
 
     rcc_peripheral_test_init();
     usart_logging_test_init();
-    user_led_test_init();
-    dma_peripheral_test_init();
+    // user_led_test_init();
+    // dma_peripheral_test_init();
 
     while(1)
     {
@@ -162,9 +161,10 @@ int main()
         // uint16_t value = s_config.timer->CCR3;
         // sprintf(buffer, "usart dma test\n",);
         _delay(400);
-        uint8_t buffer[] = "usart dma test \n";
-        // usart_write_string(USART1,buffer);
-        dma_send_data(dconfig, buffer, 16);
+        // uint8_t buffer[] = "usart test \n";
+        // usart_write_string(USART2,buffer);
+        // uint8_t buffer[] = "usart dma test \n";
+        // dma_send_data(dconfig, buffer, 16);
     }
 
     return 0;
