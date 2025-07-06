@@ -17,6 +17,8 @@
 #define USART_CR1_EN_RE         (1<<2)
 #define USART_CR1_EN_TE         (1<<3)
 #define USART_CR1_EN_UE         (1<<13)
+#define USART_CR3_EN_DMAR       (1<<7)
+#define USART_CR3_EN_DMAT       (1<<7)
 #define USART_SR_RXNE_SET       (1<<5) 
 #define USART_SR_TC_SET         (1<<6)         
 
@@ -36,5 +38,7 @@ void usart_init(usart_regs*, unsigned long);
 void usart_write(usart_regs*, char);
 void usart_write_string(usart_regs*, const char *);
 char usart_read(usart_regs*);
+void usart_enable_rx_dma(usart_regs*);
+void usart_enable_tx_dma(usart_regs*);
 
 #endif // STM32F103X_USART_H
