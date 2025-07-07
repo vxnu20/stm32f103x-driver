@@ -17,7 +17,7 @@
 #define USART_CR1_EN_RE         (1<<2)
 #define USART_CR1_EN_TE         (1<<3)
 #define USART_CR1_EN_UE         (1<<13)
-#define USART_CR3_EN_DMAR       (1<<7)
+#define USART_CR3_EN_DMAR       (1<<6)
 #define USART_CR3_EN_DMAT       (1<<7)
 #define USART_SR_RXNE_SET       (1<<5) 
 #define USART_SR_TC_SET         (1<<6)         
