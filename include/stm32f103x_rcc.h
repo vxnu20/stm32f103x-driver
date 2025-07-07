@@ -29,6 +29,7 @@
 #define APB1ENR_TIM4        (1<<2)
 #define APB1ENR_USART2      (1<<17)
 #define APB1ENR_USART3      (1<<18)
+#define AHBENR_DMA          (1<<0)
 
 typedef struct {
     volatile uint32_t CR;               /* clock control register */
@@ -49,5 +50,6 @@ void rcc_enable_usart_clock(usart_regs*);
 void rcc_enable_adc_clock(adc_regs*);
 void rcc_enable_timer_clock(timer_regs*);
 void rcc_enable_afio_clock();
+void rcc_enable_dma_clock();
 
 #endif // STM32F103X_RCC_H

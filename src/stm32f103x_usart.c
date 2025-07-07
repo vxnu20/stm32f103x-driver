@@ -26,3 +26,13 @@ char usart_read(usart_regs* usart)
     while(!(usart->SR & USART_SR_RXNE_SET)){ asm("nop"); }
     return usart->DR;
 }
+
+void usart_enable_rx_dma(usart_regs* usart)
+{
+    usart->CR3 |= USART_CR3_EN_DMAR;
+}
+
+void usart_enable_tx_dma(usart_regs* usart)
+{
+    usart->CR3 |= USART_CR3_EN_DMAT;
+}

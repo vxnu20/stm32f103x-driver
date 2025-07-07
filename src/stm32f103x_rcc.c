@@ -23,16 +23,15 @@ void rcc_enable_gpio_clock(gpio_regs* gpio)
 
 void rcc_enable_usart_clock(usart_regs* usart)
 {
-    if(usart == USART1)
+    if(usart == USART1 && !(RCC->APB2ENR & APB2ENR_USART1))
     {
-        /* enable clock access to USART1 */
         RCC->APB2ENR |= APB2ENR_USART1;
     }
-    else if(usart == USART2)
+    else if(usart == USART2 && !(RCC->APB1ENR & APB1ENR_USART2))
     {
         RCC->APB1ENR |= APB1ENR_USART2;
     }
-    else if(usart == USART3)
+    else if(usart == USART3 && !(RCC->APB1ENR & APB1ENR_USART3))
     {
         RCC->APB1ENR |= APB1ENR_USART3;
     }
@@ -87,4 +86,10 @@ void rcc_enable_timer_clock(timer_regs* timer)
 void rcc_enable_afio_clock()
 {
     RCC->APB2ENR |= APB2ENR_AFIO;
+}
+
+void rcc_enable_dma_clock()
+{
+    if(!(RCC->AHBENR & AHBENR_DMA))
+        RCC->AHBENR |= AHBENR_DMA;
 }
