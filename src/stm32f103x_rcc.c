@@ -93,3 +93,19 @@ void rcc_enable_dma_clock()
     if(!(RCC->AHBENR & AHBENR_DMA))
         RCC->AHBENR |= AHBENR_DMA;
 }
+
+void rcc_enable_i2c_clock(i2c_regs* i2c)
+{
+    if(i2c == I2C1 && !(RCC->APB1ENR & APB1ENR_I2C1))
+    {
+        RCC->APB1ENR |= APB1ENR_I2C1;
+    }
+    else if(i2c == I2C2 && !(RCC->APB1ENR & APB1ENR_I2C2))
+    {
+        RCC->APB1ENR |= APB1ENR_I2C2;
+    }
+    else
+    {
+        return;
+    }
+}

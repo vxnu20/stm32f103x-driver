@@ -7,6 +7,7 @@
 #include "stm32f103x_adc.h"
 #include "stm32f103x_timer.h"
 #include "stm32f103x_afio.h"
+#include "stm32f103x_i2c.h"
 
 /* clock specific macros */
 #define CPU_DEFAULT_FREQ       (8000000UL)
@@ -29,6 +30,8 @@
 #define APB1ENR_TIM4        (1<<2)
 #define APB1ENR_USART2      (1<<17)
 #define APB1ENR_USART3      (1<<18)
+#define APB1ENR_I2C1        (1<<21)
+#define APB1ENR_I2C2        (1<<22)
 #define AHBENR_DMA          (1<<0)
 
 typedef struct {
@@ -51,5 +54,6 @@ void rcc_enable_adc_clock(adc_regs*);
 void rcc_enable_timer_clock(timer_regs*);
 void rcc_enable_afio_clock();
 void rcc_enable_dma_clock();
+void rcc_enable_i2c_clock(i2c_regs*);
 
 #endif // STM32F103X_RCC_H
