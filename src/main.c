@@ -140,6 +140,11 @@ void dma_peripheral_test_init()
     dma_init(dconfig);
 }
 
+void i2c_peripheral_test_init()
+{
+
+}
+
 int main()
 {
     /* enable system tick */
@@ -147,6 +152,7 @@ int main()
 
     rcc_peripheral_test_init();
     usart_logging_test_init();
+    i2c_peripheral_test_init();
     // user_led_test_init();
     // dma_peripheral_test_init();
 
@@ -155,11 +161,6 @@ int main()
         
         // while(!(config.timer -> SR & TIM_SR_UF));
         gpio_pin_toggle(GPIO_PORTC,13);
-        // config.timer -> SR &= ~TIM_SR_UF;
-        // while(!(s_config.timer->SR & (1<<in_config.channel))){}
-        // uint32_t value = adc_read_value(config.adc);
-        // uint16_t value = s_config.timer->CCR3;
-        // sprintf(buffer, "usart dma test\n",);
         _delay(400);
         // uint8_t buffer[] = "usart test \n";
         // usart_write_string(USART2,buffer);
