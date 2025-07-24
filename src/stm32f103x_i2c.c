@@ -130,7 +130,7 @@ uint8_t i2c_master_write(i2c_regs* i2c, uint8_t s_addr, uint8_t m_addr, uint8_t 
         while(!(i2c->SR1 & I2C_SR1_TXE)){ asm("nop"); }
 
         /* write the next byte */
-        i2c->DR = (*data++)
+        i2c->DR = (*data++);
     }
     /* wait until the byte transfer is finished */
     while(!(i2c->SR1 & I2C_SR1_BTF)){ asm("nop"); }
