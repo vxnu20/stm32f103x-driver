@@ -17,10 +17,8 @@ void i2c_init(i2c_config config)
     config.i2c->CR1 |= I2C_CR1_PE;
 }
 
-uint8_t i2c_master_read(i2c_regs i2c, uint8_t s_addr, uint8_t m_addr, uint8_t no_of_bytes = 1,uint8_t* data)
+uint8_t i2c_master_read(i2c_regs* i2c, uint8_t s_addr, uint8_t m_addr, uint8_t no_of_bytes,uint8_t* data)
 {
-    volatile uint32_t temp;
-
     /* wait until the busy state */
     while(i2c->SR2 & I2C_SR2_BUSY){ asm("nop"); }
 
@@ -39,7 +37,7 @@ uint8_t i2c_master_read(i2c_regs i2c, uint8_t s_addr, uint8_t m_addr, uint8_t no
 
     /* clear the address flag */
     /* just reading the register will clear the register */
-    temp = i2c->SR2;
+    (void)i2c->SR2;
 
     /* wait until the transmitter empty */
     while(!(i2c->SR1 & I2C_SR1_TXE)){ asm("nop"); }
@@ -63,7 +61,7 @@ uint8_t i2c_master_read(i2c_regs i2c, uint8_t s_addr, uint8_t m_addr, uint8_t no
     while(!(i2c->SR1 & I2C_SR1_ADDR)){ asm("nop"); }
 
     /* clear the address flag */
-    temp = i2c->SR2;
+    (void)i2c->SR2;
 
     /* enable the acknowledge */
     i2c->CR1 |= I2C_CR1_ACK;
@@ -97,4 +95,46 @@ uint8_t i2c_master_read(i2c_regs i2c, uint8_t s_addr, uint8_t m_addr, uint8_t no
             no_of_bytes--;
         }
     }
+}
+
+uint8_t i2c_master_write(i2c_regs* i2c, uint8_t s_addr, uint8_t m_addr, uint8_t no_of_bytes,uint8_t* data)
+{
+    /* wait until the bus not to be busy */
+    while(i2c->SR2 & I2C_SR2_BUSY){ asm("nop"); }
+
+    /* generate a start condition */
+    i2c->CR1 |= I2C_CR1_START;
+
+    /* wait for the start flag to set */
+    while(!(i2c->SR1 & I2C_SR1_SB)){ asm("nop"); }
+
+    /* transmit the slave address + write */
+    i2c->DR = s_addr<<1;
+
+    /* wait until the address flag is set */
+    while(!(i2c->SR1 & I2C_SR1_ADDR)){ asm("nop"); }
+
+    /* clear the address flag by reading the register */
+    (void)i2c->SR2;
+
+    /* wait until the data register is empty - wait for the Tx flag set*/
+    while(!(i2c->SR1 & I2C_SR1_TXE)){ asm("nop"); }
+
+    /* send the memory adderss */
+    i2c->DR = m_addr;
+
+    /* read the value */
+    for(int i=0; i< no_of_bytes; i++)
+    {
+        /* wait until the data register is empty - wait for the Tx flag set*/
+        while(!(i2c->SR1 & I2C_SR1_TXE)){ asm("nop"); }
+
+        /* write the next byte */
+        i2c->DR = (*data++)
+    }
+    /* wait until the byte transfer is finished */
+    while(!(i2c->SR1 & I2C_SR1_BTF)){ asm("nop"); }
+
+    /* generate a stop condition */
+    i2c->CR1 |= I2C_CR1_STOP;
 }

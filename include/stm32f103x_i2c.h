@@ -15,6 +15,7 @@
 #define I2C_CR1_SWRST           (1<<15)
 #define I2C_SR1_SB              (1<<0)
 #define I2C_SR1_ADDR            (1<<1)
+#define I2C_SR1_BTF             (1<<2)
 #define I2C_SR1_RXNE            (1<<6)
 #define I2C_SR1_TXE             (1<<7)
 #define I2C_SR2_BUSY            (1<<2)
@@ -51,6 +52,7 @@ typedef struct {
 
 /* function prototypes */
 void i2c_init(i2c_config);
-uint8_t i2c_master_byte_read(i2c_regs, uint8_t, uint8_t, uint8_t, uint8_t*);
+uint8_t i2c_master_byte_read(i2c_regs*, uint8_t, uint8_t, uint8_t, uint8_t*);
+uint8_t i2c_master_byte_write(i2c_regs*, uint8_t, uint8_t, uint8_t, uint8_t*);
 
 #endif
