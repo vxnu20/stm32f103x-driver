@@ -41,4 +41,5 @@ SECTIONS {
         _ebss = .;              /* .bss section end */
     } > sram
     
+    end = .;
 }
