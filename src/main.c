@@ -14,7 +14,7 @@ void rcc_peripheral_test_init()
     // rcc_enable_adc_clock(ADC1);
     // rcc_enable_adc_clock(ADC2);
     rcc_enable_gpio_clock(GPIO_PORTA);
-    // rcc_enable_gpio_clock(GPIO_PORTB);
+    rcc_enable_gpio_clock(GPIO_PORTB);
     rcc_enable_gpio_clock(GPIO_PORTC);
     // rcc_enable_timer_clock(TIM1);
     // rcc_enable_timer_clock(TIM2);
@@ -140,7 +140,7 @@ void usart_logging_test_init()
 //     dma_init(dconfig);
 // }
 
-#ifdef I2C_MPU6050_TEST
+// #ifdef I2C_MPU6050_TEST
 
 #define MPU6050_I2C_ADDR    0x68
 #define MPU6050_WHO_AM_I    0x75
@@ -148,15 +148,15 @@ void usart_logging_test_init()
 void i2c_peripheral_test_init()
 {
     uint8_t result;
-    uint8_t buffer[];
+    char buffer[18];
     
-    gpio_set_mode(GPIO_PORTB, 6, GPIO_MODE_OUT10MHZ, GN_OPEN_DRAIN);
-    gpio_set_mode(GPIO_PORTB, 7, GPIO_MODE_OUT10MHZ, GN_OPEN_DRAIN);
+    gpio_set_mode(GPIO_PORTB, 6, GPIO_MODE_OUT10MHZ, ALT_OPEN_DRAIN);
+    gpio_set_mode(GPIO_PORTB, 7, GPIO_MODE_OUT10MHZ, ALT_OPEN_DRAIN);
 
     i2c_config i2c_cfg = {
         .i2c = I2C1,
         .pfrequency = 8,        // 8MHz APB1 clock
-        .clock_frequency = 40,  // CCR value for 100kHz
+        .ccr_value = 40,        // CCR value for 100kHz
         .rise_time = 9          // TRISE value for 100kHz
     };
 
@@ -164,13 +164,13 @@ void i2c_peripheral_test_init()
     _delay(200);    
     i2c_master_read_byte(I2C1, MPU6050_I2C_ADDR, MPU6050_WHO_AM_I, &result);
 
-    if((*result) == MPU6050_I2C_ADDR)
+    if((result) == MPU6050_I2C_ADDR)
     {
-        sprintf(buffer, "adc value -> %d \n", *result);
+        sprintf(buffer, "mpu6050, who ami -> %x\n", result);
         usart_write_string(USART1,buffer);
     }
 }
-#endif
+// #endif
 
 int main()
 {
@@ -189,7 +189,7 @@ int main()
         // while(!(config.timer -> SR & TIM_SR_UF));
         gpio_pin_toggle(GPIO_PORTC,13);
         _delay(400);
-        // uint8_t buffer[] = "usart test \n";
+        uint8_t buffer[] = "usart test \n";
         // usart_write_string(USART1,buffer);
         // uint8_t buffer[] = "usart dma test \n";
         // dma_send_data(dconfig, buffer, 16);
