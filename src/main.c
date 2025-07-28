@@ -21,8 +21,8 @@ void rcc_peripheral_test_init()
     // rcc_enable_timer_clock(TIM3);
     // rcc_enable_timer_clock(TIM4);
     rcc_enable_usart_clock(USART1);
-    rcc_enable_usart_clock(USART2);
-
+    // rcc_enable_usart_clock(USART2);
+    rcc_enable_i2c_clock(I2C1);
 }
 
 void user_led_test_init()
@@ -34,116 +34,143 @@ void user_led_test_init()
 void usart_logging_test_init()
 {
     /* uart1 for logging purpose */
-    gpio_set_mode(GPIO_PORTA, 2, GPIO_MODE_OUT2MHZ, ALT_PUSH_PULL);
+    gpio_set_mode(GPIO_PORTA, 9, GPIO_MODE_OUT2MHZ, ALT_PUSH_PULL);
     gpio_set_mode(GPIO_PORTA, 10, GPIO_MODE_IN, FLOATING_INPUT);
-    usart_init(USART2, USART_DEFAULT_BAUD);
+    usart_init(USART1, USART_DEFAULT_BAUD);
     /* uart config end */
     /* usart dma config */
-    usart_enable_rx_dma(USART2);
-    usart_enable_tx_dma(USART2);
+    // usart_enable_rx_dma(USART2);
+    // usart_enable_tx_dma(USART2);
 }
 
-void adc_peripheral_test_init()
-{
-    /* adc config example */
-    // gpio_set_mode(GPIO_PORTA, 0, GPIO_MODE_IN, ANALOG);
-    // gpio_set_mode(GPIO_PORTA, 1, GPIO_MODE_IN, ANALOG);
-    // gpio_set_mode(GPIO_PORTA, 2, GPIO_MODE_IN, ANALOG);
-    // gpio_set_mode(GPIO_PORTA, 3, GPIO_MODE_IN, ANALOG);
-    // gpio_set_mode(GPIO_PORTA, 4, GPIO_MODE_IN, ANALOG);
-    // gpio_set_mode(GPIO_PORTA, 5, GPIO_MODE_IN, ANALOG);
-    // gpio_set_mode(GPIO_PORTA, 6, GPIO_MODE_IN, ANALOG);
-    // gpio_set_mode(GPIO_PORTA, 7, GPIO_MODE_IN, ANALOG);
+// void adc_peripheral_test_init()
+// {
+//     /* adc config example */
+//     gpio_set_mode(GPIO_PORTA, 0, GPIO_MODE_IN, ANALOG);
+//     gpio_set_mode(GPIO_PORTA, 1, GPIO_MODE_IN, ANALOG);
+//     gpio_set_mode(GPIO_PORTA, 2, GPIO_MODE_IN, ANALOG);
+//     gpio_set_mode(GPIO_PORTA, 3, GPIO_MODE_IN, ANALOG);
+//     gpio_set_mode(GPIO_PORTA, 4, GPIO_MODE_IN, ANALOG);
+//     gpio_set_mode(GPIO_PORTA, 5, GPIO_MODE_IN, ANALOG);
+//     gpio_set_mode(GPIO_PORTA, 6, GPIO_MODE_IN, ANALOG);
+//     gpio_set_mode(GPIO_PORTA, 7, GPIO_MODE_IN, ANALOG);
     
-    // adc_config config;
-    // config.adc = ADC1;
-    // config.conversion_mode = continuous_conversion;
+//     adc_config config;
+//     config.adc = ADC1;
+//     config.conversion_mode = continuous_conversion;
 
-    // config.channel_config[0].channel = channel0;
-    // config.channel_config[0].sampling_time= adc_sampling239_5;
+//     config.channel_config[0].channel = channel0;
+//     config.channel_config[0].sampling_time= adc_sampling239_5;
 
-    // config.channel_config[1].channel = channel1;
-    // config.channel_config[1].sampling_time= adc_sampling239_5;
+//     config.channel_config[1].channel = channel1;
+//     config.channel_config[1].sampling_time= adc_sampling239_5;
 
-    // config.channel_config[0].channel = channel2;
-    // config.channel_config[0].sampling_time = adc_sampling239_5;
+//     config.channel_config[0].channel = channel2;
+//     config.channel_config[0].sampling_time = adc_sampling239_5;
 
-    // config.channel_config[0].channel = channel3;
-    // config.channel_config[0].sampling_time = adc_sampling239_5;
+//     config.channel_config[0].channel = channel3;
+//     config.channel_config[0].sampling_time = adc_sampling239_5;
 
-    // config.channel_config[0].channel = channel4;
-    // config.channel_config[0].sampling_time = adc_sampling71_5;
+//     config.channel_config[0].channel = channel4;
+//     config.channel_config[0].sampling_time = adc_sampling71_5;
 
-    // config.channel_config[0].channel = channel5;
-    // config.channel_config[0].sampling_time = adc_sampling71_5;
+//     config.channel_config[0].channel = channel5;
+//     config.channel_config[0].sampling_time = adc_sampling71_5;
 
-    // config.channel_config[0].channel = channel6;
-    // config.channel_config[0].sampling_time = adc_sampling71_5;
+//     config.channel_config[0].channel = channel6;
+//     config.channel_config[0].sampling_time = adc_sampling71_5;
 
-    // config.channel_config[0].channel = channel7;
-    // config.channel_config[0].sampling_time = adc_sampling71_5;
+//     config.channel_config[0].channel = channel7;
+//     config.channel_config[0].sampling_time = adc_sampling71_5;
     
-    // config.no_of_channels = 2;
+//     config.no_of_channels = 2;
 
-    // adc_init(config);
-    // _delay(200);
-    // adc_start_conversion(config.adc);
+//     adc_init(config);
+//     _delay(200);
+//     adc_start_conversion(config.adc);
 
-    /* adc config end */
-}
+//     /* adc config end */
+// }
 
-void timer_peripheral_test_init()
-{
-    /* sample timer config for testing purpose */
+// void timer_peripheral_test_init()
+// {
+//     /* sample timer config for testing purpose */
 
-    // gpio_set_mode(GPIO_PORTA, 8, GPIO_MODE_OUT10MHZ, ALT_PUSH_PULL);
-    // gpio_set_mode(GPIO_PORTB, 7, GPIO_MODE_IN, FLOATING_INPUT);
+//     gpio_set_mode(GPIO_PORTA, 8, GPIO_MODE_OUT10MHZ, ALT_PUSH_PULL);
+//     gpio_set_mode(GPIO_PORTB, 7, GPIO_MODE_IN, FLOATING_INPUT);
 
-    // timer_config config;
-    // config.timer = TIM1;
-    // config.prescalar = TIM_DEFAULT_PRE_SCLAR;
-    // config.auto_reload = TIM_DEFAULT_AUTO_RELOAD;
-    // timer_init(config);
+//     timer_config config;
+//     config.timer = TIM1;
+//     config.prescalar = TIM_DEFAULT_PRE_SCLAR;
+//     config.auto_reload = TIM_DEFAULT_AUTO_RELOAD;
+//     timer_init(config);
 
-    // /* timer channel config */
-    // timer_channel_output_config out_config;
-    // out_config.channel = t_channel1;
-    // out_config.mode = t_toggle_mode;
-    // timer_enable_output_compare(config.timer,out_config);
-    // timer_start(config.timer);
+//     /* timer channel config */
+//     timer_channel_output_config out_config;
+//     out_config.channel = t_channel1;
+//     out_config.mode = t_toggle_mode;
+//     timer_enable_output_compare(config.timer,out_config);
+//     timer_start(config.timer);
 
 
-    // timer_config s_config;
-    // s_config.timer = TIM4;
-    // s_config.prescalar = TIM_DEFAULT_PRE_SCLAR;
-    // s_config.auto_reload = TIM_DEFAULT_AUTO_RELOAD;
-    // timer_init(s_config);
+//     timer_config s_config;
+//     s_config.timer = TIM4;
+//     s_config.prescalar = TIM_DEFAULT_PRE_SCLAR;
+//     s_config.auto_reload = TIM_DEFAULT_AUTO_RELOAD;
+//     timer_init(s_config);
     
-    // timer_channel_input_config in_config;
-    // in_config.channel = t_channel2;
-    // in_config.prescalar = t_no_prescalar;
-    // in_config.selection = t_channel_ic2_ti1;
-    // in_config.filter    = no_filter;
-    // timer_enable_input_capture(s_config.timer, in_config);
-    // timer_start(s_config.timer);
+//     timer_channel_input_config in_config;
+//     in_config.channel = t_channel2;
+//     in_config.prescalar = t_no_prescalar;
+//     in_config.selection = t_channel_ic2_ti1;
+//     in_config.filter    = no_filter;
+//     timer_enable_input_capture(s_config.timer, in_config);
+//     timer_start(s_config.timer);
 
-    /* timer config end */
-}
+//     /* timer config end */
+// }
 
-dma_config dconfig;
-void dma_peripheral_test_init()
-{
-    dconfig.channel = 7;
-    dconfig.direction = read_from_memory;
-    dconfig.memory_increment = mem_inc_enabled;
-    dconfig.destination = (uint32_t)&USART2->DR;
-    dma_init(dconfig);
-}
+// dma_config dconfig;
+// void dma_peripheral_test_init()
+// {
+//     dconfig.channel = 7;
+//     dconfig.direction = read_from_memory;
+//     dconfig.memory_increment = mem_inc_enabled;
+//     dconfig.destination = (uint32_t)&USART2->DR;
+//     dma_init(dconfig);
+// }
+
+#ifdef I2C_MPU6050_TEST
+
+#define MPU6050_I2C_ADDR    0x68
+#define MPU6050_WHO_AM_I    0x75
 
 void i2c_peripheral_test_init()
 {
+    uint8_t result;
+    uint8_t buffer[];
+    
+    gpio_set_mode(GPIO_PORTB, 6, GPIO_MODE_OUT10MHZ, GN_OPEN_DRAIN);
+    gpio_set_mode(GPIO_PORTB, 7, GPIO_MODE_OUT10MHZ, GN_OPEN_DRAIN);
 
+    i2c_config i2c_cfg = {
+        .i2c = I2C1,
+        .pfrequency = 8,        // 8MHz APB1 clock
+        .clock_frequency = 40,  // CCR value for 100kHz
+        .rise_time = 9          // TRISE value for 100kHz
+    };
+
+    i2c_init(i2c_cfg);
+    _delay(200);    
+    i2c_master_read_byte(I2C1, MPU6050_I2C_ADDR, MPU6050_WHO_AM_I, &result);
+
+    if((*result) == MPU6050_I2C_ADDR)
+    {
+        sprintf(buffer, "adc value -> %d \n", *result);
+        usart_write_string(USART1,buffer);
+    }
 }
+#endif
 
 int main()
 {
@@ -153,7 +180,7 @@ int main()
     rcc_peripheral_test_init();
     usart_logging_test_init();
     i2c_peripheral_test_init();
-    // user_led_test_init();
+    user_led_test_init();
     // dma_peripheral_test_init();
 
     while(1)
@@ -163,7 +190,7 @@ int main()
         gpio_pin_toggle(GPIO_PORTC,13);
         _delay(400);
         // uint8_t buffer[] = "usart test \n";
-        // usart_write_string(USART2,buffer);
+        // usart_write_string(USART1,buffer);
         // uint8_t buffer[] = "usart dma test \n";
         // dma_send_data(dconfig, buffer, 16);
     }

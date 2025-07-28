@@ -10,14 +10,14 @@ void i2c_init(i2c_config config)
     /* set the frequency */
     config.i2c->CR2 |= config.pfrequency << I2C_CR2_FREQ_POS;
     /* set the clock speed, SM or FM */
-    config.i2c->CCR |= config.clock_frequency << I2C_CCR_CCR_POS;
+    config.i2c->CCR |= config.ccr_value << I2C_CCR_CCR_POS;
     /* set the raise time */
     config.i2c->TRISE |= config.rise_time << I2C_TRISE_TRISE_POS;
     /* enable I2C peripheral */
     config.i2c->CR1 |= I2C_CR1_PE;
 }
 
-uint8_t i2c_master_read(i2c_regs* i2c, uint8_t s_addr, uint8_t m_addr, uint8_t no_of_bytes,uint8_t* data)
+void i2c_master_read(i2c_regs* i2c, uint8_t s_addr, uint8_t m_addr, uint8_t no_of_bytes,uint8_t* data)
 {
     /* wait until the busy state */
     while(i2c->SR2 & I2C_SR2_BUSY){ asm("nop"); }
@@ -97,7 +97,7 @@ uint8_t i2c_master_read(i2c_regs* i2c, uint8_t s_addr, uint8_t m_addr, uint8_t n
     }
 }
 
-uint8_t i2c_master_write(i2c_regs* i2c, uint8_t s_addr, uint8_t m_addr, uint8_t no_of_bytes,uint8_t* data)
+void i2c_master_write(i2c_regs* i2c, uint8_t s_addr, uint8_t m_addr, uint8_t no_of_bytes,uint8_t* data)
 {
     /* wait until the bus not to be busy */
     while(i2c->SR2 & I2C_SR2_BUSY){ asm("nop"); }
@@ -137,4 +137,14 @@ uint8_t i2c_master_write(i2c_regs* i2c, uint8_t s_addr, uint8_t m_addr, uint8_t 
 
     /* generate a stop condition */
     i2c->CR1 |= I2C_CR1_STOP;
+}
+
+void i2c_master_read_byte(i2c_regs* i2c, uint8_t s_addr, uint8_t m_addr, uint8_t* data)
+{
+    i2c_master_read(i2c, s_addr, m_addr, 1, data);
+}
+
+void i2c_master_write_byte(i2c_regs* i2c, uint8_t s_addr, uint8_t m_addr, uint8_t* data)
+{
+    i2c_master_write(i2c, s_addr, m_addr, 1, data);
 }

@@ -46,13 +46,15 @@ typedef struct {
     i2c_regs* i2c;
     /* freq in mhz */
     uint8_t pfrequency;
-    uint8_t clock_frequency;
+    uint8_t ccr_value;
     uint8_t rise_time;
 }i2c_config;
 
 /* function prototypes */
 void i2c_init(i2c_config);
-uint8_t i2c_master_byte_read(i2c_regs*, uint8_t, uint8_t, uint8_t, uint8_t*);
-uint8_t i2c_master_byte_write(i2c_regs*, uint8_t, uint8_t, uint8_t, uint8_t*);
+void i2c_master_read(i2c_regs*, uint8_t, uint8_t, uint8_t, uint8_t*);
+void i2c_master_write(i2c_regs*, uint8_t, uint8_t, uint8_t, uint8_t*);
+void i2c_master_read_byte(i2c_regs*, uint8_t, uint8_t,uint8_t*);
+void i2c_master_write_byte(i2c_regs*, uint8_t, uint8_t,uint8_t*);
 
 #endif
