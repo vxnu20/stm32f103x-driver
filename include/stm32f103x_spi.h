@@ -2,7 +2,7 @@
 #define STM32F103X_SPI_H
 
 /* required header files */
-<stdint.h>
+#include <stdint.h>
 
 /* macros of spi */
 #define SPI1_BASE_ADDR      (0x40013000UL)
@@ -13,7 +13,7 @@
 #define SPI2        ((spi_regs*) SPI2_BASE_ADDR)
 
 /* structure for spi registers */
-typdef struct {
+typedef struct {
     volatile uint32_t CR1;      /* control register 1 */
     volatile uint32_t CR2;      /* control register 2 */
     volatile uint32_t SR;       /* status register */
@@ -26,7 +26,7 @@ typdef struct {
 }spi_regs;
 
 /* structure for the config paramters */
-typdef struct {
+typedef struct {
     spi_regs* spi;
 }spi_config;
 

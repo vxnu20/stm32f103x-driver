@@ -109,3 +109,19 @@ void rcc_enable_i2c_clock(i2c_regs* i2c)
         return;
     }
 }
+
+void rcc_enable_spi_clock(spi_regs* spi)
+{
+    if(spi == SPI1 && !(RCC->APB2ENR & APB2ENR_SPI1))
+    {
+        RCC->APB2ENR |= APB2ENR_SPI1;
+    }
+    else if(spi == SPI2 && !(RCC->APB1ENR & APB1ENR_SPI2))
+    {
+        RCC->APB1ENR |= APB1ENR_SPI2;
+    }
+    else
+    {
+        return;
+    }
+}
