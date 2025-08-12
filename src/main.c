@@ -22,7 +22,8 @@ void rcc_peripheral_test_init()
     // rcc_enable_timer_clock(TIM4);
     rcc_enable_usart_clock(USART1);
     // rcc_enable_usart_clock(USART2);
-    rcc_enable_i2c_clock(I2C1);
+    // rcc_enable_i2c_clock(I2C1);
+    rcc_enable_spi_clock(SPI1);
 }
 
 void user_led_test_init()
@@ -166,7 +167,7 @@ void i2c_peripheral_test_init()
 }
 #endif
 
-#ifdef I2C_MPU6050_TEST
+#ifdef MPU6050_TEST
 
 #define MPU6050_I2C_ADDR        0x68
 #define MPU6050_PWR_MGMT_1      0x6B
@@ -209,8 +210,11 @@ void mpu6050_init()
     uint8_t result;
     uint8_t buffer[20];
     /* this step will reset the chip*/
+
+#ifdef STM32F103X_I2C_TEST
     i2c_master_write_byte(I2C1, MPU6050_I2C_ADDR, MPU6050_PWR_MGMT_1,0x00U);
     i2c_master_read_byte(I2C1, MPU6050_I2C_ADDR, MPU6050_WHO_AM_I, &result);
+#endif
 
     if((result) == MPU6050_I2C_ADDR)
     {
@@ -227,8 +231,10 @@ void mpu6050_read_all_raw_values()
     // i2c_master_read_byte(I2C1, MPU6050_I2C_ADDR, MPU6050_ACCEL_XOUT_H, &result);
     for(uint8_t i =0; i<7; i++)
     {
+#ifdef STM32F103X_I2C_TEST
         i2c_master_read_byte(I2C1, MPU6050_I2C_ADDR, mpu6050_data_registers[i*2], &high);
         i2c_master_read_byte(I2C1, MPU6050_I2C_ADDR, mpu6050_data_registers[(i*2)+1], &low);
+#endif
         readed_values[i] = (uint16_t)((high<<8) | low);
     }
 }
@@ -238,14 +244,30 @@ float mpu6050_get_temperature_celsius()
     uint8_t temp_h = 0, temp_l = 0;
     int16_t temp_raw = 0;
     float temp_c = 0.0f;
-
+#ifdef STM32F103X_I2C_TEST
     i2c_master_read_byte(I2C1, MPU6050_I2C_ADDR, MPU6050_TEMP_OUT_H, &temp_h);
     i2c_master_read_byte(I2C1, MPU6050_I2C_ADDR, MPU6050_TEMP_OUT_L, &temp_l);
-
+#endif
     temp_raw = (int16_t)((temp_h << 8) | temp_l);
     temp_c = (temp_raw / 340.0f) + 36.53f;
 
     return temp_c;
+}
+
+#endif
+
+#ifdef STM32F103X_SPI_TEST
+
+void spi_peripheral_test_init()
+{
+    /* gpio init for spi */
+    gpio_set_mode(GPIO_PORTA, 4, GPIO_MODE_OUT50MHZ, GN_PUSH_PULL);
+    gpio_set_mode(GPIO_PORTA, 5, GPIO_MODE_OUT50MHZ, ALT_PUSH_PULL);
+    gpio_set_mode(GPIO_PORTA, 6, GPIO_MODE_IN, FLOATING_INPUT);
+    gpio_set_mode(GPIO_PORTA, 7, GPIO_MODE_OUT50MHZ, ALT_PUSH_PULL);
+
+
+
 }
 
 #endif
@@ -261,13 +283,13 @@ int main()
     // i2c_peripheral_test_init();
     // dma_peripheral_test_init();
 
-#ifdef I2C_MPU6050_TEST
+#ifdef MPU6050_TEST
     mpu6050_init();
 #endif
 
     while(1)
     {
-#ifdef I2C_MPU6050_TEST
+#ifdef MPU6050_TEST && (STM32F103X_SPI_TEST || STM32F103X_I2C_TEST)
         char buffer[40];
         sprintf(buffer, "temp in C -> %d\n",(uint8_t)mpu6050_get_temperature_celsius());
         usart_write_string(USART1,buffer);

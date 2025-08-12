@@ -25,10 +25,26 @@ typedef struct {
     volatile uint32_t I2SPR;    /* I2S pre-scalar register */   
 }spi_regs;
 
+typedef enum {
+    /* pclock divided by prescalar */
+    pclk_2 = 0x00,
+    pclk_4,
+    pclk_8,
+    pclk_16,
+    pclk_32,
+    pclk_64,
+    pclk_128,
+    pclk_256
+}spi_baud_rate;
+
 /* structure for the config paramters */
 typedef struct {
     spi_regs* spi;
+    spi_baud_rate baud_rate;
+    uint8_t clock_polarity;
+    uint8_t clock_phase;
 }spi_config;
+
 
 /* function prototypes */
 void spi_init(spi_config);
