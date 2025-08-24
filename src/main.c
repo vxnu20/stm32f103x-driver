@@ -423,12 +423,22 @@ int main()
     /* enable system tick */
     systick_init(CPU_DEFAULT_FREQ/1000);
 
+    clock_config clk = {
+        .source = CLOCK_SRC_PLL,
+        .hse_freq = 8000000,
+        .pll_mul = PLL_MUL_16,                       // 8 MHz * 9 = 72 MHz
+        .ahb_prescaler = AHB_DIV1,
+        .apb1_prescaler = APB1_DIV4,
+        .apb2_prescaler = APB2_DIV4,
+    };
+    rcc_sysclk_init(&clk);
+
     rcc_peripheral_test_init();
     usart_logging_test_init();
     user_led_test_init();
     // i2c_peripheral_test_init();
     // dma_peripheral_test_init();
-    spi_peripheral_test_init();
+    // spi_peripheral_test_init();
 
 #ifdef MPU6050_TEST
     mpu6050_init();

@@ -125,3 +125,66 @@ void rcc_enable_spi_clock(spi_regs* spi)
         return;
     }
 }
+
+void rcc_sysclk_init(const clock_config* config)
+{
+    flash_wait_state wait_state;
+
+    /* enable HSE */
+    if(config->source == CLOCK_SRC_HSE || config->source == CLOCK_SRC_PLL)
+    {
+        RCC->CR |= RCC_CR_HSEON;
+        /* wait until the clock is ready */
+        while(!(RCC->CR&RCC_CR_HSERDY)){ asm("nop"); }
+    }
+    /* configure flash frequency */
+    if(config->pll_mul > PLL_MUL_6)
+    {
+        wait_state = FLASH_LATENCY_2;
+    }
+    else
+    {
+        wait_state = FLASH_LATENCY_1;
+    }
+
+    flash_set_wait_state(wait_state);
+
+    /* clear all the prescalar values */
+    RCC->CFGR &= ~(RCC_CFGR_HPRE_MASK | RCC_CFGR_PPRE1_MASK | RCC_CFGR_PPRE2_MASK);
+    /* configure the prescalar value */
+    RCC->CFGR |= (config->ahb_prescaler | config->apb1_prescaler, config->apb2_prescaler);
+
+    if(config->source == CLOCK_SRC_PLL)
+    {
+        /* clear and configure the pll if selected */
+        RCC->CFGR &= ~(RCC_CFGR_PLLSRC);
+        RCC->CFGR &= ~(RCC_CFGR_PLLMUL_MASK);
+
+        if(config->hse_freq > 0)
+        {
+            RCC->CFGR |= RCC_CFGR_PLLSRC;
+        }
+        RCC->CFGR |= ((config->source-2) << RCC_CFGR_PLLMUL_SHIFT);
+        
+        /* enable PLL and wait */
+        RCC->CR |= RCC_CR_PLLON;
+        while(!(RCC->CR&RCC_CR_PLLRDY)){ asm("nop"); }
+    }
+    /* select the system clock */
+    /* clear the clock selection */
+    RCC->CFGR &= ~RCC_CFGR_SW_MASK;
+    if (config->source == CLOCK_SRC_HSI) 
+    {
+        RCC->CFGR |= CLOCK_SRC_HSI;
+    } 
+    else if (config->source == CLOCK_SRC_HSE) 
+    {
+        RCC->CFGR |= CLOCK_SRC_HSE;
+    } 
+    else 
+    {
+        RCC->CFGR |= CLOCK_SRC_PLL;
+    }
+    while (((RCC->CFGR >> 2) & 0x3) != config->source);
+
+}
