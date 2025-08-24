@@ -152,7 +152,7 @@ void rcc_sysclk_init(const clock_config* config)
     /* clear all the prescalar values */
     RCC->CFGR &= ~(RCC_CFGR_HPRE_MASK | RCC_CFGR_PPRE1_MASK | RCC_CFGR_PPRE2_MASK);
     /* configure the prescalar value */
-    RCC->CFGR |= (config->ahb_prescaler | config->apb1_prescaler, config->apb2_prescaler);
+    RCC->CFGR |= (config->ahb_prescaler | config->apb1_prescaler | config->apb2_prescaler);
 
     if(config->source == CLOCK_SRC_PLL)
     {
@@ -164,7 +164,7 @@ void rcc_sysclk_init(const clock_config* config)
         {
             RCC->CFGR |= RCC_CFGR_PLLSRC;
         }
-        RCC->CFGR |= ((config->source-2) << RCC_CFGR_PLLMUL_SHIFT);
+        RCC->CFGR |= ((config->pll_mul-2) << RCC_CFGR_PLLMUL_SHIFT);
         
         /* enable PLL and wait */
         RCC->CR |= RCC_CR_PLLON;
