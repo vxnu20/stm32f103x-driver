@@ -188,3 +188,49 @@ void rcc_sysclk_init(const clock_config* config)
     while (((RCC->CFGR >> 2) & 0x3) != config->source);
 
 }
+
+void rcc_enable_lsi_clock()
+{
+    /* enable the LSE clock */
+    RCC->CSR |= RCC_CSR_LSION;
+    /* wait unitil the clock is ready */
+    while(!(RCC->CSR & RCC_CSR_LSIRDY)) {asm("nop");}
+}
+
+void rcc_disable_lsi_clock()
+{
+    /* enable the LSE clock */
+    RCC->CSR &= ~RCC_CSR_LSION;
+}
+
+rcc_reset_reason_t rcc_get_reset_reason()
+{
+    rcc_reset_reason_t reset_reason = PORRSTF;
+    struct {
+        uint32_t flag;
+        rcc_reset_reason_t reason;
+    } reset_map[] = {
+        {RCC_CSR_PINRSTF, PINRSTF},
+        {RCC_CSR_PORRSTF, PORRSTF},
+        {RCC_CSR_SFTRSTF, SFTRSTF},
+        {RCC_CSR_IWDGRSTF, IWDGRSTF},
+        {RCC_CSR_WWDGRSTF, WWDGRSTF},
+        {RCC_CSR_LPWRRSTF, LPWRRSTF}
+    };
+
+    for (unsigned i = 0; i < sizeof(reset_map)/sizeof(reset_map[0]); i++) {
+        if (RCC->CSR & reset_map[i].flag) {
+            
+            reset_reason = reset_map[i].reason;
+        }
+    }
+    /* clear the reason */
+    RCC->CSR |= RCC_CSR_RMVF;
+    return reset_reason; 
+}
+
+void rcc_enable_wwdg_clock()
+{
+    if(!(RCC->APB1ENR & APB1ENR_WWDGEN))
+        RCC->APB1ENR |= APB1ENR_WWDGEN;
+}

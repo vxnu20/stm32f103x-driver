@@ -28,7 +28,15 @@
 #define RCC_CFGR_PLLMUL_MASK    (0x3C0000U)
 #define RCC_CFGR_PLLMUL_SHIFT   (18)
 #define RCC_CFGR_SW_MASK        (0x3U)
-
+#define RCC_CSR_LSION           (1<<0)
+#define RCC_CSR_LSIRDY          (1<<1)
+#define RCC_CSR_RMVF            (1<<24)
+#define RCC_CSR_PINRSTF         (1<<26)
+#define RCC_CSR_PORRSTF         (1<<27)
+#define RCC_CSR_SFTRSTF         (1<<28)
+#define RCC_CSR_IWDGRSTF        (1<<29)     
+#define RCC_CSR_WWDGRSTF        (1<<30)
+#define RCC_CSR_LPWRRSTF        (1<<31)
 
 /* macros for enable APB1, APB2 and AHB bits */
 #define APB2ENR_AFIO            (1<<0)
@@ -43,6 +51,7 @@
 #define APB1ENR_TIM2            (1<<0)
 #define APB1ENR_TIM3            (1<<1)
 #define APB1ENR_TIM4            (1<<2)
+#define APB1ENR_WWDGEN          (1<<11)
 #define APB1ENR_SPI2            (1<<14)
 #define APB1ENR_USART2          (1<<17)
 #define APB1ENR_USART3          (1<<18)
@@ -124,6 +133,15 @@ typedef struct {
     apb2_prescaler_t apb2_prescaler;
 } clock_config;
 
+typedef enum {
+    PINRSTF = 0x00,
+    PORRSTF,
+    SFTRSTF,
+    IWDGRSTF,
+    WWDGRSTF,
+    LPWRRSTF
+}rcc_reset_reason_t;
+
 // peripheral clock function prototypes
 void rcc_enable_gpio_clock(gpio_regs*);
 void rcc_enable_usart_clock(usart_regs*);
@@ -133,7 +151,11 @@ void rcc_enable_afio_clock();
 void rcc_enable_dma_clock();
 void rcc_enable_i2c_clock(i2c_regs*);
 void rcc_enable_spi_clock(spi_regs*);
+void rcc_enable_wwdg_clock();
 // system clock config function prototypes
 void rcc_sysclk_init(const clock_config*);
+void rcc_enable_lsi_clock();
+void rcc_disable_lsi_clock();
+rcc_reset_reason_t rcc_get_reset_reason();
 
 #endif // STM32F103X_RCC_H
