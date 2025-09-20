@@ -5,6 +5,7 @@
 #include "stm32f103x_rcc.h"
 #include "stm32f103x_dma.h"
 #include "stm32f103x_timer.h"
+#include "stm32f103x_wdg.h"
 #include <stdio.h>
 
 void rcc_peripheral_test_init()
@@ -24,6 +25,9 @@ void rcc_peripheral_test_init()
     // rcc_enable_usart_clock(USART2);
     // rcc_enable_i2c_clock(I2C1);
     rcc_enable_spi_clock(SPI1);
+    rcc_enable_wwdg_clock();
+    // rcc_enable_lsi_clock();
+    // rcc_disable_lsi_clock();
 }
 
 void user_led_test_init()
@@ -418,11 +422,8 @@ void spi_peripheral_test_init()
 
 #endif
 
-int main()
+void clock_test_init()
 {
-    /* enable system tick */
-    systick_init(CPU_DEFAULT_FREQ/1000);
-
     clock_config clk = {
         .source = CLOCK_SRC_PLL,
         .hse_freq = 8000000,
@@ -432,13 +433,58 @@ int main()
         .apb2_prescaler = APB2_DIV4,
     };
     rcc_sysclk_init(&clk);
+}
 
+void check_reset_reason()
+{
+    rcc_reset_reason_t reason= rcc_get_reset_reason();
+    if(reason == WWDGRSTF)
+    {
+        while(1)
+        {
+            gpio_pin_toggle(GPIO_PORTC,13);
+            _delay(20);
+        }
+    }
+    else if(reason == IWDGRSTF)
+    {
+        while(1)
+        {
+            gpio_pin_toggle(GPIO_PORTC,13);
+            _delay(50);
+        }
+    }
+}
+
+void wdg_peripheral_test_init()
+{
+    iwdg_config iwdgconfig = {
+        .prescalar_value = pre_div_128,
+        .reload_value = 1560
+    };
+    iwdg_init(iwdgconfig);
+
+    wwdg_config config = {
+        .counter = 0x7F,
+        .window = 0x5F,
+        .prescalar = pre_div_4096_1
+    };
+    wwdg_init(config);
+}
+
+int main()
+{
+    /* enable system tick */
+    systick_init(CPU_DEFAULT_FREQ/1000);
+    // check_reset_reason();
+    // clock_test_init();
     rcc_peripheral_test_init();
     usart_logging_test_init();
     user_led_test_init();
     // i2c_peripheral_test_init();
     // dma_peripheral_test_init();
     // spi_peripheral_test_init();
+    // wdg_peripheral_test_init()
 
 #ifdef MPU6050_TEST
     mpu6050_init();
@@ -459,7 +505,14 @@ int main()
     bmp280_get_sensor_data();
 #endif
         gpio_pin_toggle(GPIO_PORTC,13);
+
+        // char buffer[40];
+        // printf(buffer, "temp in C -> \n");
+        // usart_write_string(USART1,buffer);
+
         _delay(500);
+        // iwdg_refresh();
+        // wwdg_refresh(0xF7);
     }
 
     return 0;
