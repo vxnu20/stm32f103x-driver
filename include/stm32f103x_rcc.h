@@ -37,6 +37,11 @@
 #define RCC_CSR_IWDGRSTF        (1<<29)     
 #define RCC_CSR_WWDGRSTF        (1<<30)
 #define RCC_CSR_LPWRRSTF        (1<<31)
+#define RCC_BDCR_LSEON          (1<<0)
+#define RCC_BDCR_LSERDY         (1<<1)
+#define RCC_BDCR_RTCEN          (1<<15)
+#define RCC_BDCR_RTCSEL_POS     8
+#define RCC_BDSR_RTCSEL_MASK    (0x3 << RCC_BDCR_RTCSEL_POS)
 
 /* macros for enable APB1, APB2 and AHB bits */
 #define APB2ENR_AFIO            (1<<0)
@@ -57,6 +62,7 @@
 #define APB1ENR_USART3          (1<<18)
 #define APB1ENR_I2C1            (1<<21)
 #define APB1ENR_I2C2            (1<<22)
+#define APB1ENR_PWR             (1<<28)
 #define AHBENR_DMA              (1<<0)
 
 typedef struct {
@@ -142,6 +148,13 @@ typedef enum {
     LPWRRSTF
 }rcc_reset_reason_t;
 
+typedef enum {
+    no_clock,
+    lse_clock,
+    lsi_clock,
+    hse_clock
+}rcc_rtc_clk_src;
+
 // peripheral clock function prototypes
 void rcc_enable_gpio_clock(gpio_regs*);
 void rcc_enable_usart_clock(usart_regs*);
@@ -155,7 +168,10 @@ void rcc_enable_wwdg_clock();
 // system clock config function prototypes
 void rcc_sysclk_init(const clock_config*);
 void rcc_enable_lsi_clock();
-void rcc_disable_lsi_clock();
 rcc_reset_reason_t rcc_get_reset_reason();
+void rcc_disable_lsi_clock();
+void rcc_enable_lse_clock(void);
+void rcc_enable_rtc_clock(rcc_rtc_clk_src);
+void rcc_enable_pwr_clock(void);
 
 #endif // STM32F103X_RCC_H
