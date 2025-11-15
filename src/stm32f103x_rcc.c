@@ -234,3 +234,26 @@ void rcc_enable_wwdg_clock()
     if(!(RCC->APB1ENR & APB1ENR_WWDGEN))
         RCC->APB1ENR |= APB1ENR_WWDGEN;
 }
+
+void rcc_enable_lse_clock(void)
+{
+    RCC->BDCR |= RCC_BDCR_LSEON;
+    while(!(RCC->BDCR & RCC_BDCR_LSERDY)){ asm("nop"); }
+}
+
+void rcc_disable_lse_clock(void)
+{
+    RCC->BDCR &= ~RCC_BDCR_LSEON;
+    while(!(RCC->BDCR & RCC_BDCR_LSERDY)){ asm("nop"); }
+}
+
+void rcc_enable_rtc_clock(rcc_rtc_clk_src clk)
+{
+    RCC->BDCR |= ((clk & 0x3) << RCC_BDCR_RTCSEL_POS);
+    RCC->BDCR |= RCC_BDCR_RTCEN;
+}
+
+void rcc_enable_pwr_clock(void)
+{
+    RCC->APB1ENR |= APB1ENR_PWR;
+}
